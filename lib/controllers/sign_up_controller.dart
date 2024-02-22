@@ -47,6 +47,7 @@ class SignUpController extends GetxController {
       EasyLoading.dismiss();
       Get.snackbar("Error", "$e",
           snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.all(20),
           backgroundColor: Colors.blue,
           colorText: Colors.white);
     }

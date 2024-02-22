@@ -4,6 +4,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:signature_funiture_project/controllers/sign_in_controller.dart';
+import 'package:signature_funiture_project/screens/auth_ui/forget_password_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_up_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/main_screen.dart';
 
@@ -24,125 +25,174 @@ class _SignInScreenState extends State<SignInScreen> {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Sign In"),
+          leading: GestureDetector(onTap: (){
+            Navigator.pop(context);
+          },
+              child: Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.black,
+          )),
+          elevation: 0,
+          title: Text(
+            "Sign In",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400),
+          ),
           centerTitle: true,
         ),
-        body: Container(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                    margin: EdgeInsets.all(20),
-                    child: TextFormField(
-                      controller: userEmail,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          hintText: "Email",
-                          prefixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
-                    )),
-                Container(
-                  margin: EdgeInsets.all(20),
-                  child: Obx(
-                    () => TextFormField(
-                      controller: userPassword,
-                      obscureText: signInController.isPasswordVisible.value,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: InputDecoration(
-                          hintText: "Password",
-                          suffixIcon: GestureDetector(
-                            onTap: () {
-                              signInController.isPasswordVisible.toggle();
-                            },
-                            child: signInController.isPasswordVisible.value
-                                ? Icon(Icons.visibility_off)
-                                : Icon(Icons.visibility),
-                          ),
-                          prefixIcon: Icon(Icons.password),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+        body: Center(
+          child: Container(
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                      height: 200,
+                      child: Image(
+                        image: AssetImage("lib/assets/images/Login.png"),
+                      )),
+                  Container(
+                      margin: EdgeInsets.all(20),
+                      child: TextFormField(
+                        controller: userEmail,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            hintText: "Email",
+                            prefixIcon: Icon(Icons.email),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                      )),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                    child: Obx(
+                      () => TextFormField(
+                        controller: userPassword,
+                        obscureText: signInController.isPasswordVisible.value,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: InputDecoration(
+                            hintText: "Password",
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                signInController.isPasswordVisible.toggle();
+                              },
+                              child: signInController.isPasswordVisible.value
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility),
+                            ),
+                            prefixIcon: Icon(Icons.lock_outline),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  margin: EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Text("Forgotpassord?"),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Material(
-                  child: Center(
+                  GestureDetector(
+                    onTap: () {
+                      Get.to(() => ForgetPasswordScreen());
+                    },
                     child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(20.0)),
-                      width: Get.width / 1.2,
-                      height: Get.height / 12,
-                      child: TextButton(
-                          onPressed: () async {
-                            String email = userEmail.text.trim();
-                            String password = userPassword.text.trim();
+                      alignment: Alignment.centerRight,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 10,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Text(
+                          "Forget Password?",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.lightBlue),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Material(
+                    child: Center(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.lightBlueAccent,
+                            borderRadius: BorderRadius.circular(15)),
+                        width: Get.width / 1.1,
+                        height: Get.height / 12,
+                        child: TextButton(
+                            onPressed: () async {
+                              String email = userEmail.text.trim();
+                              String password = userPassword.text.trim();
 
-                            if (email.isEmpty || password.isEmpty) {
-                              Get.snackbar("Error", "Please enter all details");
-                            } else {
-                              UserCredential? userCredential =
-                                  await signInController.signInMethod(
-                                      email, password);
+                              if (email.isEmpty || password.isEmpty) {
+                                Get.snackbar(
+                                    margin: EdgeInsets.all(20),
+                                    "Error",
+                                    "Please enter all details",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.pink,
+                                    colorText: Colors.white);
+                              } else {
+                                UserCredential? userCredential =
+                                    await signInController.signInMethod(
+                                        email, password);
 
-                              if (userCredential != null) {
-                                if (userCredential.user!.emailVerified) {
-                                  Get.snackbar("Success", "Login Successfully!",
-                                      snackPosition: SnackPosition.BOTTOM,
-                                      backgroundColor: Colors.green,
-                                      colorText: Colors.white);
+                                if (userCredential != null) {
+                                  if (userCredential.user!.emailVerified) {
+                                    Get.snackbar(
+                                        "Success", "Login Successfully!",
+                                        margin: EdgeInsets.all(20),
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.green,
+                                        colorText: Colors.white);
 
-                                  Get.offAll(()=>MainSCreen());
+                                    Get.offAll(() => MainSCreen());
+                                  } else {
+                                    Get.snackbar("Error",
+                                        "Please verify your email before login!",
+                                        margin: EdgeInsets.all(20),
+                                        snackPosition: SnackPosition.BOTTOM,
+                                        backgroundColor: Colors.redAccent,
+                                        colorText: Colors.white);
+                                  }
                                 } else {
-                                  Get.snackbar("Error",
-                                      "Please verify your email before login!",
+                                  Get.snackbar("Error", "Please try again",
                                       snackPosition: SnackPosition.BOTTOM,
+                                      margin: EdgeInsets.all(20),
                                       backgroundColor: Colors.redAccent,
                                       colorText: Colors.white);
                                 }
                               }
-                              else{
-                                Get.snackbar("Error",
-                                    "Please try again",
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    backgroundColor: Colors.redAccent,
-                                    colorText: Colors.white);
-                              }
-                            }
-                          },
-                          child: Text(
-                            "Sign in",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          )),
+                            },
+                            child: Text(
+                              "Sign in",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            )),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Dont have an account?"),
-                    GestureDetector(
-                        onTap: () {
-                          Get.offAll(() => SignUpScreen());
-                        },
-                        child: Text("Sign Up"))
-                  ],
-                )
-              ],
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Dont have an account? ",
+                          style: TextStyle(fontSize: 15)),
+                      GestureDetector(
+                          onTap: () {
+                            Get.off(() => SignUpScreen());
+                          },
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500),
+                          ))
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

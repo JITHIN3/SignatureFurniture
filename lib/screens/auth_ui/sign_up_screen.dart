@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:signature_funiture_project/controllers/sign_up_controller.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_in_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -12,10 +14,18 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final SignUpController signUpController = Get.put(SignUpController());
+  TextEditingController username = TextEditingController();
+  TextEditingController userEmail = TextEditingController();
+  TextEditingController userPhone = TextEditingController();
+  TextEditingController userCity = TextEditingController();
+  TextEditingController userPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.blue,
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
         title: Text("Sign Up"),
         centerTitle: true,
       ),
@@ -28,6 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                     margin: EdgeInsets.all(10),
                     child: TextFormField(
+                      controller: userEmail,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           hintText: "Email",
@@ -38,7 +49,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                     margin: EdgeInsets.all(10),
                     child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
+                      controller: username,
                       decoration: InputDecoration(
                           hintText: "Username",
                           prefixIcon: Icon(Icons.person),
@@ -48,7 +59,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                     margin: EdgeInsets.all(10),
                     child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
+                      controller: userPhone,
+                      keyboardType: TextInputType.number,
                       decoration: InputDecoration(
                           hintText: "Phone",
                           prefixIcon: Icon(Icons.phone_android_outlined),
@@ -58,14 +70,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Container(
                     margin: EdgeInsets.all(10),
                     child: TextFormField(
-                      keyboardType: TextInputType.emailAddress,
+                      controller: userCity,
                       decoration: InputDecoration(
-                          hintText: "Password",
-                          suffixIcon: Icon(Icons.visibility_off),
-                          prefixIcon: Icon(Icons.password),
+                          hintText: "City",
+                          prefixIcon: Icon(Icons.location_city),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
                     )),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: Obx(
+                    () => TextFormField(
+                      obscureText: signUpController.isPasswordVisible.value,
+                      controller: userPassword,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                          hintText: "Password",
+                          suffixIcon: GestureDetector(
+                              onTap: () {
+                                signUpController.isPasswordVisible.toggle();
+                              },
+                              child: signUpController.isPasswordVisible.value
+                                  ? Icon(Icons.visibility_off)
+                                  : Icon(Icons.visibility)),
+                          prefixIcon: Icon(Icons.password),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                    ),
+                  ),
+                ),
                 Container(
                   alignment: Alignment.centerRight,
                   margin: EdgeInsets.symmetric(
@@ -85,8 +118,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       width: Get.width / 1.2,
                       height: Get.height / 12,
                       child: TextButton(
-                          onPressed: () {
-                            Navigator.push(context,MaterialPageRoute(builder: (context)=>SignInSdart pub global activate flutterfire_clicreen()));
+                          onPressed: () async {
+                            String name = username.text.trim();
+                            String email = userEmail.text.trim();
+                            String phone = userPhone.text.trim();
+                            String city = userCity.text.trim();
+                            String password = userPassword.text.trim();
+                            String userDeviceToken = '';
+
+                            if (name.isEmpty ||
+                                email.isEmpty ||
+                                phone.isEmpty ||
+                                password.isEmpty) {
+                              Get.snackbar("Error", "Please Enter all Details",
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.blue,
+                                  colorText: Colors.white);
+                            } else {
+                              UserCredential? userCredential =
+                                  await signUpController.signUpMethod(
+                                      name,
+                                      email,
+                                      phone,
+                                      city,
+                                      password,
+                                      userDeviceToken);
+
+                              if (userCredential != null) {
+                                Get.snackbar("Verification email sent ",
+                                    "Please check your email",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor: Colors.blue,
+                                    colorText: Colors.white);
+
+                                FirebaseAuth.instance.signOut();
+                                Get.offAll(() => SignInScreen());
+                              }
+                            }
                           },
                           child: Text(
                             "Sign Up",
@@ -95,11 +163,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10,),
-                Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-                  Text("Already have an account?"),
-                  Text("Sign In")
-                ],)
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Already have an account?"),
+                    GestureDetector(
+                        onTap: () {
+                          Get.off(() => SignInScreen());
+                        },
+                        child: Text("Sign In"))
+                  ],
+                )
               ],
             ),
           ),

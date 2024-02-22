@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:signature_funiture_project/firebase_options.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_in_screen.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SignUpScreen()
+      home: SplashScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }

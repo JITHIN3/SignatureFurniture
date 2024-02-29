@@ -4,9 +4,12 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:signature_funiture_project/controllers/sign_in_controller.dart';
+import 'package:signature_funiture_project/screens/admin_panel/admin_main_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/forget_password_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_up_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/main_screen.dart';
+
+import '../../controllers/get_user_data_controller.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -17,6 +20,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final SignInController signInController = Get.put(SignInController());
+  final GetUserDataController getUserDataController =
+      Get.put(GetUserDataController());
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPassword = TextEditingController();
 
@@ -25,13 +30,14 @@ class _SignInScreenState extends State<SignInScreen> {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
       return Scaffold(
         appBar: AppBar(
-          leading: GestureDetector(onTap: (){
-            Navigator.pop(context);
-          },
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.pop(context);
+              },
               child: Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.black,
-          )),
+                Icons.arrow_back_ios_rounded,
+                color: Colors.black,
+              )),
           elevation: 0,
           title: Text(
             "Sign In",
@@ -135,16 +141,32 @@ class _SignInScreenState extends State<SignInScreen> {
                                     await signInController.signInMethod(
                                         email, password);
 
+                                var userData = await getUserDataController
+                                    .getUserData(userCredential!.user!.uid);
+
                                 if (userCredential != null) {
                                   if (userCredential.user!.emailVerified) {
-                                    Get.snackbar(
-                                        "Success", "Login Successfully!",
-                                        margin: EdgeInsets.all(20),
-                                        snackPosition: SnackPosition.BOTTOM,
-                                        backgroundColor: Colors.green,
-                                        colorText: Colors.white);
+                                    //
+                                    if (userData[0]['isAdmin'] == true) {
+                                      Get.offAll(() => AdminMainScreen());
+                                      Get.snackbar(
+                                          "Success Admin Login", "Login Successfully!",
+                                          margin: EdgeInsets.all(20),
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white);
+                                    } else {
 
-                                    Get.offAll(() => MainSCreen());
+                                      Get.offAll(() => MainSCreen());
+                                      Get.snackbar(
+                                          "Success User Login", "Login Successfully!",
+                                          margin: EdgeInsets.all(20),
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white);
+                                    }
+
+
                                   } else {
                                     Get.snackbar("Error",
                                         "Please verify your email before login!",

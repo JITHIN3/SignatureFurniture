@@ -28,8 +28,8 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-      return Scaffold(
-        appBar: AppBar(
+      return Scaffold(backgroundColor: Colors.white,
+        appBar: AppBar(backgroundColor: Colors.white,
           leading: GestureDetector(
               onTap: () {
                 Navigator.pop(context);

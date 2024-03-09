@@ -19,8 +19,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
-      return Scaffold(
-        appBar: AppBar(
+      return Scaffold(backgroundColor: Colors.white,
+        appBar: AppBar(backgroundColor: Colors.white,
           title: Text(
             "Forgot Password",
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w400),

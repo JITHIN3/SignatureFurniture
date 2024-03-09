@@ -44,6 +44,10 @@ dependencies:
   firebase_auth: ^4.16.0
   flutter_easyloading: ^3.0.5
   firebase_messaging: ^14.7.10
+  carousel_slider: ^4.2.1
+  cached_network_image: ^3.3.1
+  image_card: ^0.0.4
+  image_picker: ^1.0.7
 
 
 dev_dependencies:

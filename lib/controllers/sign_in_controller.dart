@@ -27,7 +27,7 @@ class SignInController extends GetxController {
       Get.snackbar("Error", "$e",
           snackPosition: SnackPosition.BOTTOM,
           margin: EdgeInsets.all(20),
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.redAccent,
           colorText: Colors.white);
     }
   }

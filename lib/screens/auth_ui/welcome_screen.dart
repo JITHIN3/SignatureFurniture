@@ -11,8 +11,8 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return Scaffold(backgroundColor: Colors.white,
+      appBar: AppBar(leading: Container(),backgroundColor: Colors.white,
         title: Text("Siganture Funiture"),
         centerTitle: true,
       ),

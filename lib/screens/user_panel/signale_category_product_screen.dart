@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:signature_funiture_project/models/category_model.dart';
 import 'package:signature_funiture_project/models/product_model.dart';
+import 'package:signature_funiture_project/screens/user_panel/product_details_screen.dart';
 
 
 class AllSingleCategoryProductScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _AllSingleCategoryProductScreenState
 
 
         title: Text(
-          widget.categoryId,
+          "Products",
 
         ),
       ),
@@ -71,19 +72,19 @@ class _AllSingleCategoryProductScreenState
                 childAspectRatio: 1.19,
               ),
               itemBuilder: (context, index) {
-                final produc
-                ProductModel productModel = ProductModel(productId: productId,
-                    categoryId: categoryId,
-                    productName: productName,
-                    categoryName: categoryName,
-                    salePrice: salePrice,
-                    fullPrice: fullPrice,
-                    productImages: productImages,
-                    deliveryTime: deliveryTime,
-                    isSale: isSale,
-                    productDescription: productDescription,
-                    createdAt: createdAt,
-                    updatedAt: updatedAt)
+                final productData = snapshot.data!.docs[index];
+                ProductModel productModel = ProductModel(productId: productData['productId'],
+                    categoryId: productData['categoryId'],
+                    productName: productData['productName'],
+                    categoryName: productData['categoryName'],
+                    salePrice: productData['salePrice'],
+                    fullPrice:productData['fullPrice'],
+                    productImages: productData['productImages'],
+                    deliveryTime: productData['deliveryTime'],
+                    isSale: productData['isSale'],
+                    productDescription: productData['productDescription'],
+                    createdAt: productData['createdAt'],
+                    updatedAt: productData['updatedAt']);
                 // CategoriesModel categoriesModel = CategoriesModel(
                 //   categoryId: snapshot.data!.docs[index]['categoryId'],
                 //   categoryImg: snapshot.data!.docs[index]['categoryImg'],
@@ -94,6 +95,7 @@ class _AllSingleCategoryProductScreenState
                 return Row(
                   children: [
                     GestureDetector(
+                    onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
 
 
                       child: Padding(
@@ -104,11 +106,11 @@ class _AllSingleCategoryProductScreenState
                             width: Get.width / 2.3,
                             heightImage: Get.height / 10,
                             imageProvider: CachedNetworkImageProvider(
-                              categoriesModel.categoryImg,
+                              productModel.productImages[0],
                             ),
                             title: Center(
                               child: Text(
-                                categoriesModel.categoryName,
+                                productModel.productName,
                                 style: TextStyle(fontSize: 12.0),
                               ),
                             ),

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:signature_funiture_project/models/category_model.dart';
+import 'package:signature_funiture_project/screens/user_panel/signale_category_product_screen.dart';
 
 class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({super.key});
@@ -52,38 +53,40 @@ class CategoriesWidget extends StatelessWidget {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(5),
-                              child: Card(
+                            GestureDetector(onTap: ()=>Get.to(()=>AllSingleCategoryProductScreen(categoryId:categoriesModel.categoryId)),
+                              child: Padding(
+                                padding: EdgeInsets.all(5),
+                                child: Card(
 
-                                child: Container(
-                                  height: 100,
-                                  width: 80,
-                                  margin: const EdgeInsets.only(left: 10),
-                                  decoration: const BoxDecoration(
-                                      gradient: LinearGradient(
-                                          colors: [Colors.white, Colors.lightBlueAccent],
-                                          begin: const FractionalOffset(0, .8),
-                                          end: const FractionalOffset(1, 1.3),
-                                          stops: [0.0,3.0],
-                                          tileMode: TileMode.clamp
+                                  child: Container(
+                                    height: 100,
+                                    width: 80,
+                                    margin: const EdgeInsets.only(left: 10),
+                                    decoration: const BoxDecoration(
+                                        gradient: LinearGradient(
+                                            colors: [Colors.white, Colors.lightBlueAccent],
+                                            begin: const FractionalOffset(0, .8),
+                                            end: const FractionalOffset(1, 1.3),
+                                            stops: [0.0,3.0],
+                                            tileMode: TileMode.clamp
+                                        ),
+                                      borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(10),
                                       ),
-                                    borderRadius: BorderRadius.horizontal(
-                                      left: Radius.circular(10),
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(color: Colors.black54,
-                                        blurRadius: 10.0, // soften the shadow
-                                        spreadRadius: 1.0, //extend the shadow
+                                      boxShadow: [
+                                        BoxShadow(color: Colors.black54,
+                                          blurRadius: 10.0, // soften the shadow
+                                          spreadRadius: 1.0, //extend the shadow
 
                     )]
+                                    ),
+                                  child: Center(child: Image(image: NetworkImage(categoriesModel.categoryImg,),width: 70,),),),
+                                  elevation: 0,
+                                  color: Colors.grey.shade50,
+                                  clipBehavior: Clip.hardEdge,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                child: Center(child: Image(image: NetworkImage(categoriesModel.categoryImg,),width: 70,),),),
-                                elevation: 0,
-                                color: Colors.grey.shade50,
-                                clipBehavior: Clip.hardEdge,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
                               ),
                             ),

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:signature_funiture_project/models/category_model.dart';
@@ -20,7 +21,7 @@ class AllProductWidget extends StatelessWidget {
     return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection('products')
-          .where('isSale', isEqualTo:true)
+          .where('isSale', isEqualTo: true)
           .get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -79,25 +80,38 @@ class AllProductWidget extends StatelessWidget {
               return Row(
                 children: [
                   GestureDetector(
-                    onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
+                    onTap: () => Get.to(
+                        () => ProductDetailsScreen(productModel: productModel)),
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
-                      child: Container(
-                        child: FillImageCard(
-                          borderRadius: 20.0,
-                          width: Get.width / 2.3,
-                          heightImage: Get.height / 6,
-                          imageProvider: CachedNetworkImageProvider(
-                            productModel.productImages[0],
-                          ),
-                          title: Center(
-                            child: Text(
-                              productModel.productName,maxLines: 1,
-                              style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
-                            ),
-                          ),
-                          footer: Center(child: Text("PKR: "+  productModel.fullPrice)),
+                      // child: Container(
+                      //   child: FillImageCard(
+                      //     borderRadius: 20.0,
+                      //     width: Get.width / 2.3,
+                      //     heightImage: Get.height / 6,
+                      //     imageProvider: CachedNetworkImageProvider(
+                      //       productModel.productImages[0],
+                      //     ),
+                      //     title: Center(
+                      //       child: Text(
+                      //         productModel.productName,maxLines: 1,
+                      //         style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
+                      //       ),
+                      //     ),
+                      //     footer: Center(child: Text("PKR: "+  productModel.fullPrice)),
+                      //   ),
+                      // ),
+                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      Container(height: 200,width: 150,
+                        child: Image(fit: BoxFit.cover,
+                          image:
+                              AssetImage("lib/assets/images/Hello.png")
                         ),
+                      ),
+                          Text("200")
+
+                        ],
                       ),
                     ),
                   ),

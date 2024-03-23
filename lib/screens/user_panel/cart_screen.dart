@@ -28,8 +28,10 @@ class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Cart"),
+        backgroundColor: Colors.white,
+        title: Text("My Cart"),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -80,101 +82,222 @@ class _CartScreenState extends State<CartScreen> {
                       createdAt: productData['createdAt'],
                       updatedAt: productData['updatedAt'],
                       productQuantity: productData['productQuantity'],
-                      productTotalPrice: productData['productTotalPrice'],
+                        productTotalPrice: double.parse(
+                            productData['productTotalPrice'].toString())
                     );
 
                     // calculate price
                     productPriceController.fetchProductPrice();
 
-                    return SwipeActionCell(
-                      trailingActions: [
-                        SwipeAction(
-                          title: "Delete",
-                          forceAlignmentToBoundary: true,
-                          performsFirstActionWithFullSwipe: true,
-                          onTap: (CompletionHandler handler) async {
-                            print('deleted');
-                            await FirebaseFirestore.instance
-                                .collection('cart')
-                                .doc(user!.uid)
-                                .collection('cartOrders')
-                                .doc(cartModel.productId)
-                                .delete();
-                          },
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Container(
+                                child:
+                                    Image.network(cartModel.productImages[0]),
+                                width: 120,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    cartModel.productName,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    cartModel.categoryName,
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 11),
+                                  ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "₹" + cartModel.fullPrice,
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                            fontSize: 15,
+                                            color: Colors.grey),
+                                      ),
+                                      SizedBox(
+                                        width: 6,
+                                      ),
+                                      Text(
+                                        "₹" + cartModel.salePrice,
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
-                      ],
-                      key: ObjectKey(cartModel.productId),
-                      child: Card(
-                        elevation: 5,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.lightBlueAccent,
-                            backgroundImage:
-                                NetworkImage(cartModel.productImages[0]),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Material(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    new BoxShadow(
+                                      color: Colors.black,
+                                      blurRadius: .5,
+                                    ),
+                                  ],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(0)),
+                              width: 100,
+                              height: 32,
+                              child: TextButton(
+                                  onPressed: () {},
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Row(
+                                      children: [
+                                        GestureDetector(
+                                            onTap: () async {
+                                              if (cartModel.productQuantity >
+                                                  1) {
+                                                await FirebaseFirestore.instance
+                                                    .collection('cart')
+                                                    .doc(user!.uid)
+                                                    .collection('cartOrders')
+                                                    .doc(cartModel.productId)
+                                                    .update({
+                                                  'productQuantity': cartModel
+                                                          .productQuantity -
+                                                      1,
+                                                  'productTotalPrice': (double
+                                                          .parse(cartModel
+                                                              .salePrice) *
+                                                      (cartModel
+                                                              .productQuantity -
+                                                          1))
+                                                });
+                                              }
+                                            },
+                                            child: Text("-")),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: Text(cartModel.productQuantity
+                                              .toString()),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            if (cartModel.productQuantity > 0) {
+                                              await FirebaseFirestore.instance
+                                                  .collection('cart')
+                                                  .doc(user!.uid)
+                                                  .collection('cartOrders')
+                                                  .doc(cartModel.productId)
+                                                  .update({
+                                                'productQuantity':
+                                                    cartModel.productQuantity +
+                                                        1,
+                                                'productTotalPrice': double
+                                                        .parse(cartModel
+                                                            .salePrice) +
+                                                    double.parse(cartModel
+                                                            .salePrice) *
+                                                        (cartModel
+                                                            .productQuantity)
+                                              });
+                                            }
+                                          },
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 18,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )),
+                            ),
                           ),
-                          title: Text(cartModel.productName),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10, top: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(cartModel.productTotalPrice.toString()),
-                              SizedBox(
-                                width: Get.width / 20.0,
+                              Row(
+                                children: [
+                                  Text(
+                                    "Delivery by " + cartModel.deliveryTime,
+                                    style: TextStyle(fontSize: 13),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "|",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "FREE Delivery",
+                                    style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
                               ),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (cartModel.productQuantity > 1) {
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print('deleted');
                                     await FirebaseFirestore.instance
                                         .collection('cart')
                                         .doc(user!.uid)
                                         .collection('cartOrders')
                                         .doc(cartModel.productId)
-                                        .update({
-                                      'productQuantity':
-                                          cartModel.productQuantity - 1,
-                                      'productTotalPrice':
-                                          (double.parse(cartModel.fullPrice) *
-                                              (cartModel.productQuantity - 1))
-                                    });
-                                  }
-                                },
-                                child: CircleAvatar(
-                                  radius: 14.0,
-                                  backgroundColor: Colors.deepOrangeAccent,
-                                  child: Text("-"),
-                                ),
-                              ),
-                              SizedBox(
-                                width: Get.width / 20.0,
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  if (cartModel.productQuantity > 0) {
-                                    await FirebaseFirestore.instance
-                                        .collection('cart')
-                                        .doc(user!.uid)
-                                        .collection('cartOrders')
-                                        .doc(cartModel.productId)
-                                        .update({
-                                      'productQuantity':
-                                          cartModel.productQuantity + 1,
-                                      'productTotalPrice': double.parse(
-                                              cartModel.fullPrice) +
-                                          double.parse(cartModel.fullPrice) *
-                                              (cartModel.productQuantity)
-                                    });
-                                  }
-                                },
-                                child: CircleAvatar(
-                                  radius: 14.0,
-                                  backgroundColor: Colors.deepOrangeAccent,
-                                  child: Text("+"),
+                                        .delete();
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Icon(Icons.delete_outline_outlined,
+                                          color: Colors.redAccent),
+                                      Text(
+                                        "Remove",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                            color: Colors.redAccent),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10,bottom: 10),
+                          child: Divider(thickness:5),
+                        ),
+                      ],
                     );
+
                   }),
             );
           }
@@ -191,7 +314,7 @@ class _CartScreenState extends State<CartScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Obx(
                 () => Text(
-                  "Total ${productPriceController.totalPrice.value.toStringAsFixed(1)} ",
+                  "Total ₹${productPriceController.totalPrice.value.toStringAsFixed(1)} ",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
                 ),
               ),
@@ -208,10 +331,18 @@ class _CartScreenState extends State<CartScreen> {
                   height: Get.height / 18,
                   child: TextButton(
                       onPressed: () {
-                        Get.to(
-                          () => CheckOutScreen(),
-                        );
-                      },
+
+
+
+                          Get.to(
+                                () => CheckOutScreen(),
+                          );
+
+
+
+
+                      }
+                      ,
                       child: Text(
                         "Checkout",
                         style: TextStyle(

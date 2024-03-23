@@ -29,7 +29,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +84,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       createdAt: productData['createdAt'],
                       updatedAt: productData['updatedAt'],
                       productQuantity: productData['productQuantity'],
-                      productTotalPrice: productData['productTotalPrice'],
+                      productTotalPrice: double.parse(
+                          productData['productTotalPrice'].toString()),
                     );
 
                     // calculate price
@@ -188,14 +188,23 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
         ),
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, top: 20),
+                child: Text(
+                  "User Details",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 20.0),
                 child: Container(
-                  height: 55.0,
                   child: TextFormField(
+                    controller: nameController,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                       labelText: 'Name',
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -213,9 +222,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
+                    controller: phoneController,
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                       labelText: 'Phone',
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -231,9 +242,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 20.0),
                 child: Container(
-                  height: 55.0,
+
                   child: TextFormField(
+                    minLines: 6,
+                    // any number you need (It works as the rows for the textarea)
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: addressController,
                     decoration: InputDecoration(
+                      border: OutlineInputBorder(),
                       labelText: 'Address',
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -245,37 +262,44 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrange,
-                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                ),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),),
+                    backgroundColor: Colors.deepOrange,
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  ),
+                  onPressed: () async {
+                    if (nameController.text != '' &&
+                        phoneController.text != '' &&
+                        addressController.text != '') {
+                      String name = nameController.text.trim();
+                      String phone = phoneController.text.trim();
+                      String address = addressController.text.trim();
+                      String customerToken = await getCustomerDeviceToken();
 
-                onPressed: () async {
-                  if (nameController.text != '' &&
-                      phoneController.text != '' &&
-                      addressController.text != '') {
-                    String name = nameController.text.trim();
-                    String phone = phoneController.text.trim();
-                    String address = addressController.text.trim();
-                    String customerToken = await getCustomerDeviceToken();
+                      //place order serice
 
-                    //place order serice
-
-                    placeOrder(
-                      context: context,
-                      customerName: name,
-                      customerPhone: phone,
-                      customerAddress: address,
-                      customerDeviceToken: customerToken,
-                    );
-                  } else {
-                    print("Fill The Details");
-                  }
-                },
-                child: Text(
-                  "Place Order",
-                  style: TextStyle(color: Colors.white),
+                      placeOrder(
+                        context: context,
+                        customerName: name,
+                        customerPhone: phone,
+                        customerAddress: address,
+                        customerDeviceToken: customerToken,
+                      );
+                    } else {
+                      print("Please fill all details");
+                      Get.snackbar("Warning!", "Please fill all details!",
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                          duration: Duration(seconds: 5),
+                          snackPosition: SnackPosition.BOTTOM);
+                    }
+                  },
+                  child: Text(
+                    "Place Order",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ],

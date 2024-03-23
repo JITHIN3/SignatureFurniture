@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, deprecated_member_use
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_options.dart';
@@ -12,6 +12,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:signature_funiture_project/models/cart_model.dart';
 import 'package:signature_funiture_project/models/product_model.dart';
 import 'package:signature_funiture_project/screens/user_panel/cart_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   ProductModel productModel;
@@ -28,6 +29,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Product Details"),
         actions: [
@@ -41,36 +43,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ],
       ),
       body: Container(
+        width: Get.width,
         child: Column(children: [
           CarouselSlider(
-            items: widget.productModel.productImages
-                .map(
-                  (imageUrls) => ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: CachedNetworkImage(
-                      imageUrl: imageUrls,
-                      fit: BoxFit.fill,
-                      width: Get.width - 10,
-                      placeholder: (context, url) => ColoredBox(
-                        color: Colors.white,
-                        child: Center(child: CupertinoActivityIndicator()),
+              items: widget.productModel.productImages
+                  .map(
+                    (imageUrls) => ClipRRect(
+                      borderRadius: BorderRadius.circular(0),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrls,
+                        fit: BoxFit.cover,
+                        width: Get.width,
+                        height: Get.height,
+                        placeholder: (context, url) => ColoredBox(
+                          color: Colors.white,
+                          child: Center(child: CupertinoActivityIndicator()),
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
-                  ),
-                )
-                .toList(),
-            options: CarouselOptions(
-              height: 180.0,
-              // enlargeCenterPage: true,
-
-              aspectRatio: 16 / 9,
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enableInfiniteScroll: true,
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              viewportFraction: 0.8,
-            ),
-          ),
+                  )
+                  .toList(),
+              options: CarouselOptions(
+                height: 300,
+                aspectRatio: 16 / 9,
+                viewportFraction: 0.8,
+                initialPage: 0,
+                enableInfiniteScroll: true,
+                reverse: false,
+                autoPlay: true,
+                autoPlayInterval: Duration(seconds: 3),
+                autoPlayAnimationDuration: Duration(milliseconds: 800),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                scrollDirection: Axis.horizontal,
+              )),
           Padding(
             padding: EdgeInsets.all(8),
             child: Card(
@@ -119,66 +125,88 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: Text(widget.productModel.productDescription),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Material(
-                          color: Colors.grey.shade200,
-                          child: Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [],
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              width: Get.width / 3.0,
-                              height: Get.height / 16,
-                              child: TextButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Whatsapp",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5.0,
-                        ),
-                        Material(
-                          color: Colors.grey.shade200,
-                          child: Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  boxShadow: [],
-                                  color: Colors.deepOrangeAccent,
-                                  borderRadius: BorderRadius.circular(10.0)),
-                              width: Get.width / 3.0,
-                              height: Get.height / 16,
-                              child: TextButton(
-                                onPressed: () async {
-                                  await checkProductExistence(uId: user!.uid);
-                                },
-                                child: Text(
-                                  "Add to cart",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
           )
         ]),
       ),
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Material(
+                color: Colors.grey.shade200,
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [],
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    width: Get.width / 3.0,
+                    height: Get.height / 16,
+                    child: TextButton(
+                      onPressed: () {
+                        sendMessageOnWhatsApp(
+                            productModel: widget.productModel);
+                      },
+                      child: Text(
+                        "Whatsapp",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 5.0,
+              ),
+              Material(
+                color: Colors.grey.shade200,
+                child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                        boxShadow: [],
+                        color: Colors.deepOrangeAccent,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    width: Get.width / 3.0,
+                    height: Get.height / 16,
+                    child: TextButton(
+                      onPressed: () async {
+                        await checkProductExistence(uId: user!.uid);
+                      },
+                      child: Text(
+                        "Add to cart",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
+  }
+
+  static Future<void> sendMessageOnWhatsApp({
+    required ProductModel productModel,
+  }) async {
+    final number = "+918943123283";
+    final message =
+        "Hello Signature Furniture \n I want to know about this product\n ${productModel.productName} \n ${productModel.productId}";
+    final url = 'https://wa.me/$number?text=${Uri.encodeComponent(message)}';
+
+    if(await canLaunch(url)){
+      await launch(url);
+    }
+    else{
+      throw 'Could not launch $url';
+    }
   }
 
   //check

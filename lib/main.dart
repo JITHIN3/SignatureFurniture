@@ -7,6 +7,7 @@ import 'package:signature_funiture_project/screens/auth_ui/sign_in_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_up_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/splash_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/main_screen.dart';
+import 'package:signature_funiture_project/widgets/test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,13 +24,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Signature Funiture',
       theme: ThemeData(
 
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: SplashScreen(),
+      // home: Test(),
       builder: EasyLoading.init(),
     );
   }

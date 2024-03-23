@@ -103,6 +103,7 @@ void placeOrder({
         backgroundColor: Colors.green,
         colorText: Colors.white,
         duration: Duration(seconds: 5),
+
       );
 
       EasyLoading.dismiss();

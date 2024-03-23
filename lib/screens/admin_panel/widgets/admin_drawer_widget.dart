@@ -2,18 +2,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:signature_funiture_project/screens/admin_panel/admin_main_screen.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_order_screen.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_product_screen.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_users_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/all_order_screen.dart';
 
-import '../screens/auth_ui/welcome_screen.dart';
+import '../../auth_ui/welcome_screen.dart';
 
-class DrawerWidget extends StatefulWidget {
-  const DrawerWidget({super.key});
+
+class AdminDrawerWidget extends StatefulWidget {
+  const AdminDrawerWidget({super.key});
 
   @override
-  State<DrawerWidget> createState() => _DrawerWidgetState();
+  State<AdminDrawerWidget> createState() => _AdminDrawerWidgetState();
 }
 
-class _DrawerWidgetState extends State<DrawerWidget> {
+class _AdminDrawerWidgetState extends State<AdminDrawerWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,7 +37,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: ListTile(
                 titleAlignment: ListTileTitleAlignment.center,
-                title: Text("JITHIN"),
+                title: Text("Admin"),
                 subtitle: Text("version 1.0.1"),
                 leading: CircleAvatar(
                   radius: 22.0,
@@ -49,33 +54,36 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
-              child: ListTile(
-                titleAlignment: ListTileTitleAlignment.center,
-                title: Text("Home"),
-                trailing: Icon(Icons.arrow_forward_rounded),
-
-                leading:Icon(Icons.home)
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:20),
-              child: ListTile(
+              child: ListTile(onTap: (){
+                Get.offAll(()=>AdminMainScreen());
+              },
                   titleAlignment: ListTileTitleAlignment.center,
-                  title: Text("Product"),
-                  trailing: Icon(Icons.arrow_forward_rounded),
+                  title: Text("Home"),
 
-                  leading:Icon(Icons.production_quantity_limits)
+
+                  leading:Icon(Icons.home)
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: ListTile(onTap: (){
-                Get.back();
-                Get.to(()=>AllOrderScreen());
+                Get.to(()=>AdminAllUsersScreen());
               },
                   titleAlignment: ListTileTitleAlignment.center,
-                  title: Text("Order"),
-                  trailing: Icon(Icons.arrow_forward_rounded),
+                  title: Text("Users"),
+
+
+                  leading:Icon(Icons.person)
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:20),
+              child: ListTile(onTap: (){
+                Get.to(()=>AdminAllOrdersScreen());
+              },
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: Text("Oders"),
+
 
                   leading:Icon(Icons.shopping_cart)
               ),
@@ -83,28 +91,55 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: ListTile(
+                onTap: (){
+                  Get.back();
+                  Get.to(()=>AdminAllProductsScreen());
+                },
                   titleAlignment: ListTileTitleAlignment.center,
-                  title: Text("Contact"),
-                  trailing: Icon(Icons.arrow_forward_rounded),
+                  title: Text("Product"),
 
-                  leading:Icon(Icons.help)
+
+                  leading:Icon(Icons.production_quantity_limits)
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:20),
+              child: ListTile(onTap: (){
+                // Get.back();
+                // Get.to(()=>AllOrderScreen());
+              },
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: Text("Categories"),
+
+
+                  leading:Icon(Icons.category)
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: ListTile(
-                onTap: () async{
-                  GoogleSignIn googleSignIn = GoogleSignIn();
-                  FirebaseAuth _auth = FirebaseAuth.instance;
-                  await _auth.signOut();
-                  await googleSignIn.signOut();
-                  Get.offAll(()=>WelcomeScreen());
-                },
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: Text("Contact"),
+
+
+                  leading:Icon(Icons.phone)
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:20),
+              child: ListTile(onTap: () async{
+                GoogleSignIn googleSignIn = GoogleSignIn();
+                FirebaseAuth _auth = FirebaseAuth.instance;
+                await _auth.signOut();
+                await googleSignIn.signOut();
+                Get.offAll(()=>WelcomeScreen());
+              },
+
                   titleAlignment: ListTileTitleAlignment.center,
                   title: Text("Logout"),
-                  trailing: Icon(Icons.arrow_forward_rounded),
 
-                  leading:Icon(Icons.logout)
+
+                  leading:Icon(Icons.login)
               ),
             ),
 

@@ -57,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Image(
                         image: AssetImage("lib/assets/images/Login.png"),
                       )),
-                  Container(
+                  Container(height: 50,
                       margin: EdgeInsets.all(20),
                       child: TextFormField(
                         controller: userEmail,
@@ -68,26 +68,28 @@ class _SignInScreenState extends State<SignInScreen> {
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10))),
                       )),
-                  Container(
+                  Container(height: 50,
                     margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: Obx(
-                      () => TextFormField(
-                        controller: userPassword,
-                        obscureText: signInController.isPasswordVisible.value,
-                        keyboardType: TextInputType.visiblePassword,
-                        decoration: InputDecoration(
-                            hintText: "Password",
-                            suffixIcon: GestureDetector(
-                              onTap: () {
-                                signInController.isPasswordVisible.toggle();
-                              },
-                              child: signInController.isPasswordVisible.value
-                                  ? Icon(Icons.visibility_off)
-                                  : Icon(Icons.visibility),
-                            ),
-                            prefixIcon: Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10))),
+                      () => Center(
+                        child: TextFormField(
+                          controller: userPassword,
+                          obscureText: signInController.isPasswordVisible.value,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: InputDecoration(
+                              hintText: "Password",
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  signInController.isPasswordVisible.toggle();
+                                },
+                                child: signInController.isPasswordVisible.value
+                                    ? Icon(Icons.visibility)
+                                    : Icon(Icons.visibility_off),
+                              ),
+                              prefixIcon: Icon(Icons.lock_outline),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                        ),
                       ),
                     ),
                   ),
@@ -105,7 +107,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: Text(
                           "Forget Password?",
                           style: TextStyle(
-                              fontSize: 15,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Colors.lightBlue),
                         ),
@@ -122,7 +124,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(15)),
                         width: Get.width / 1.1,
-                        height: Get.height / 12,
+                        height: Get.height / 18,
                         child: TextButton(
                             onPressed: () async {
                               String email = userEmail.text.trim();

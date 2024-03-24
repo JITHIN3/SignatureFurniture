@@ -9,7 +9,7 @@ class SignInController extends GetxController {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //for password visibility
-  var isPasswordVisible = false.obs;
+  var isPasswordVisible = true.obs;
 
   Future<UserCredential?> signInMethod(
     String userEmail,

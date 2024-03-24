@@ -103,13 +103,26 @@ class AllProductWidget extends StatelessWidget {
                       // ),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                      Container(height: 200,width: 150,
+                      Container(height: Get.height /6 ,width: Get.width / 2.7,
                         child: Image(fit: BoxFit.cover,
                           image:
-                              AssetImage("lib/assets/images/Hello.png")
+                              NetworkImage(productModel.productImages[0])
                         ),
                       ),
-                          Text("200")
+                          SizedBox(height: 3,),
+                          Text(productModel.productName,maxLines: 1,style: TextStyle(fontSize: 15),),
+                          Text("Home",style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.grey,fontSize: 12),),
+                          SizedBox(height: 3,),
+
+
+                          Row(
+                            children: [
+                              Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 16)),
+                              SizedBox(width: 5,),
+                              Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 13,color: Colors.grey,decoration: TextDecoration.lineThrough)),
+                            ],
+                          ),
+                          Text("Free delivery",style:TextStyle(fontSize: 13)),
 
                         ],
                       ),

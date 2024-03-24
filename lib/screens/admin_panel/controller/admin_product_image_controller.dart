@@ -119,4 +119,6 @@ class AddProductImagesController extends GetxController {
 
     return await reference.ref.getDownloadURL();
   }
+
+
 }

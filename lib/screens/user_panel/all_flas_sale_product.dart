@@ -22,7 +22,7 @@ class AllFlashSaleProductScreen extends StatefulWidget {
 class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.grey.shade300,
       appBar: AppBar(
         title: Text(
           "All Flash Sale Products",
@@ -61,9 +61,9 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
               physics: BouncingScrollPhysics(),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisSpacing: 3,
-                crossAxisSpacing: 3,
-                childAspectRatio: 1.19,
+                mainAxisSpacing: 5,
+                crossAxisSpacing: 5,
+                childAspectRatio: 0.80,
               ),
               itemBuilder: (context, index) {
                 final productData = snapshot.data!.docs[index];
@@ -87,32 +87,63 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
                 //   createdAt: snapshot.data!.docs[index]['createdAt'],
                 //   updatedAt: snapshot.data!.docs[index]['updatedAt'],
                 // );
-                return Row(
-                  children: [
-                    GestureDetector(
+                return Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: Container(color:Colors.white,
+                    child: Row(
+                      children: [
+                        GestureDetector(
 
-                    onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Container(
-                          child: FillImageCard(
-                            borderRadius: 20.0,
-                            width: Get.width / 2.3,
-                            heightImage: Get.height / 10,
-                            imageProvider: CachedNetworkImageProvider(
-                              productModel.productImages[0],
-                            ),
-                            title: Center(
-                              child: Text(
-                                productModel.productName,maxLines: 1,
-                                style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
-                              ),
+                        onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
+                          // child: Padding(
+                          //   padding: EdgeInsets.all(8.0),
+                          //   child: Container(
+                          //     child: FillImageCard(
+                          //       borderRadius: 20.0,
+                          //       width: Get.width / 2.3,
+                          //       heightImage: Get.height / 10,
+                          //       imageProvider: CachedNetworkImageProvider(
+                          //         productModel.productImages[0],
+                          //       ),
+                          //       title: Center(
+                          //         child: Text(
+                          //           productModel.productName,maxLines: 1,
+                          //           style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child:Column(crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(height: Get.height /6 ,width: Get.width / 2.7,
+                                  child: Image(fit: BoxFit.cover,
+                                      image:
+                                      NetworkImage(productModel.productImages[0])
+                                  ),
+                                ),
+                                SizedBox(height: 3,),
+                                Text(productModel.productName,maxLines: 1,style: TextStyle(fontSize: 15),),
+                                Text("Home",style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.grey,fontSize: 12),),
+                                SizedBox(height: 3,),
+                                Row(
+                                  children: [
+                                    Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 16)),
+                                    SizedBox(width: 5,),
+                                    Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 13,color: Colors.red,decoration: TextDecoration.lineThrough)),
+                                  ],
+                                ),
+                                Text("Free delivery",style:TextStyle(fontSize: 13)),
+
+                              ],
                             ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
+                  ),
                 );
               },
             );

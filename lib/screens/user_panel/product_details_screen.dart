@@ -260,6 +260,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               : widget.productModel.fullPrice));
       await documentReference.set(cartModel.toMap());
       print("product added");
+      Get.snackbar("Product Added",
+          "Please check your cart",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.blueAccent,
+          margin: EdgeInsets.all(20),
+          colorText: Colors.white);
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:signature_funiture_project/models/category_model.dart';
@@ -78,10 +79,10 @@ class FlashSaleWidget extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Container(
-                          child: FillImageCard(
-                            borderRadius: 20.0,
+                          child: FillImageCard(color: Colors.grey.shade100,
+                            borderRadius: 10.0,
                             width: Get.width / 3.5,
-                            heightImage: Get.height / 12,
+                            heightImage: Get.height / 8,
                             imageProvider: CachedNetworkImageProvider(
                               productModel.productImages[0],
                             ),
@@ -93,7 +94,7 @@ class FlashSaleWidget extends StatelessWidget {
                             footer: Row(children: [
                               Text("Rs ${productModel.salePrice}",
                                   style: TextStyle(fontSize: 10.0)),
-                              SizedBox(width: 2.0,),
+                              SizedBox(width: 3.0,),
                               Text("Rs ${productModel.fullPrice}",
                                   style: TextStyle(
                                       fontSize: 10.0,

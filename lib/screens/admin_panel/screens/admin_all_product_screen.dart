@@ -20,7 +20,7 @@ class AdminAllProductsScreen extends StatefulWidget {
 class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("All Products"),
         actions: [
@@ -85,28 +85,97 @@ class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
                   updatedAt: data['updatedAt'],
                 );
 
-                return Card(
-                  elevation: 5,
-                  child: ListTile(
-                    onTap: () {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(onTap: (){
                       Get.to(() => AdminSingleProductDetailScreen(productModel: productModel));
                     },
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.blueAccent,
-                      backgroundImage: CachedNetworkImageProvider(
-                        productModel.productImages[0],
-                        errorListener: (err) {
-                          // Handle the error here
-                          print('Error loading image');
-                          Icon(Icons.error);
-                        },
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Container(
+                                child: Image.network(
+                                    productModel.productImages[0]),
+                                width: 120,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    productModel.productName,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "Product Id : " + productModel.productId,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 13),
+                                  ),
+                                  Text(
+                                    "Category : " + productModel.categoryName,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
+                                  Text(
+                                    "Category Id : " + productModel.categoryId,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
+
+
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    title: Text(productModel.productName),
-                    subtitle: Text(productModel.productId),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                  ),
+
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Divider(
+                        thickness: 3,
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
+                  ],
                 );
+
+                // return Card(
+                //   elevation: 5,
+                //   child: ListTile(
+                //     onTap: () {
+                //       Get.to(() => AdminSingleProductDetailScreen(productModel: productModel));
+                //     },
+                //     leading: CircleAvatar(
+                //       backgroundColor: Colors.blueAccent,
+                //       backgroundImage: CachedNetworkImageProvider(
+                //         productModel.productImages[0],
+                //         errorListener: (err) {
+                //           // Handle the error here
+                //           print('Error loading image');
+                //           Icon(Icons.error);
+                //         },
+                //       ),
+                //     ),
+                //     title: Text(productModel.productName),
+                //     subtitle: Text(productModel.productId),
+                //     trailing: Icon(Icons.arrow_forward_ios),
+                //   ),
+                // );
               },
             );
           }

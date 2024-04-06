@@ -69,7 +69,7 @@ class _AllSingleCategoryProductScreenState
                 crossAxisCount: 2,
                 mainAxisSpacing: 5,
                 crossAxisSpacing: 5,
-                childAspectRatio: 0.80,
+                childAspectRatio: 0.75,
               ),
               itemBuilder: (context, index) {
                 final productData = snapshot.data!.docs[index];
@@ -98,7 +98,7 @@ class _AllSingleCategoryProductScreenState
                     child: Row(
                       children: [
                         GestureDetector(
-                        onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
+                        onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel,productid:productModel.productId,)),
 
                           //
                           // child: Padding(

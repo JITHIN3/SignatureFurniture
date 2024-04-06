@@ -22,10 +22,10 @@ class AllFlashSaleProductScreen extends StatefulWidget {
 class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.grey.shade300,
+    return Scaffold(backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: Text(
-          "All Flash Sale Products",
+          "All Flash Sale Products",style: TextStyle(fontSize: 19),
         ),
       ),
       body: FutureBuilder(
@@ -63,7 +63,7 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 5,
                 crossAxisSpacing: 5,
-                childAspectRatio: 0.80,
+                childAspectRatio: 0.75,
               ),
               itemBuilder: (context, index) {
                 final productData = snapshot.data!.docs[index];
@@ -94,7 +94,7 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
                       children: [
                         GestureDetector(
 
-                        onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
+                        onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel,productid: productModel.productId,)),
                           // child: Padding(
                           //   padding: EdgeInsets.all(8.0),
                           //   child: Container(

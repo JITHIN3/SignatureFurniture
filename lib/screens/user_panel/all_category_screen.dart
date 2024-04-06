@@ -11,8 +11,6 @@ import 'package:image_card/image_card.dart';
 import 'package:signature_funiture_project/models/category_model.dart';
 import 'package:signature_funiture_project/screens/user_panel/signale_category_product_screen.dart';
 
-
-
 class AllCategoriesScreen extends StatefulWidget {
   const AllCategoriesScreen({super.key});
 
@@ -24,12 +22,12 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-
-
+        backgroundColor: Colors.white,
         title: Text(
           "All Categories",
-
+          style: TextStyle(fontSize: 19),
         ),
       ),
       body: FutureBuilder(
@@ -77,8 +75,8 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 return Row(
                   children: [
                     GestureDetector(
-                      onTap: ()=>Get.to(()=>AllSingleCategoryProductScreen(categoryId:categoriesModel.categoryId)),
-
+                      onTap: () => Get.to(() => AllSingleCategoryProductScreen(
+                          categoryId: categoriesModel.categoryId)),
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(
@@ -103,7 +101,6 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 );
               },
             );
-
           }
 
           return Container();
@@ -112,4 +109,3 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
     );
   }
 }
-

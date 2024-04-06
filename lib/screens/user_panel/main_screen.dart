@@ -16,8 +16,11 @@ import 'package:signature_funiture_project/widgets/custom_drawer_widget.dart';
 import 'package:signature_funiture_project/widgets/flash_sale_widget.dart';
 import 'package:signature_funiture_project/widgets/heading_widget.dart';
 
+import '../../models/product_model.dart';
+
 class MainSCreen extends StatelessWidget {
-  const MainSCreen({super.key});
+   MainSCreen({super.key, this.productModel});
+  ProductModel? productModel;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +51,7 @@ class MainSCreen extends StatelessWidget {
               headingTitle: "Categories",
               headingSubTitle: "According to your budget",
               onTap: () => Get.to(() => AllCategoriesScreen()),
-              buttonText: "See more > ",
+              buttonText: "See more >",
             ),
 
             CategoriesWidget(),
@@ -57,7 +60,7 @@ class MainSCreen extends StatelessWidget {
               headingTitle: "Flash Sale",
               headingSubTitle: "According to your budget",
               onTap: () => Get.to(() => AllFlashSaleProductScreen()),
-              buttonText: "See more > ",
+              buttonText: "See more >",
             ),
             FlashSaleWidget(),
 
@@ -65,7 +68,7 @@ class MainSCreen extends StatelessWidget {
               headingTitle: "All Products",
               headingSubTitle: "According to your budget",
               onTap: () => Get.to(() => AllProductScreen()),
-              buttonText: "See more > ",
+              buttonText: "See more >",
             ),
 
             AllProductWidget()

@@ -31,7 +31,7 @@ class _CartScreenState extends State<CartScreen> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("My Cart"),
+        title: Text("My Cart",style: TextStyle(fontSize: 19),),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance

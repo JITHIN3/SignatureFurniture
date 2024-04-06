@@ -17,7 +17,7 @@ class AllProductScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.grey.shade300,appBar:AppBar(title: Text("All Products"),) ,
+    return Scaffold(backgroundColor: Colors.grey.shade300,appBar:AppBar(title: Text("All Products",style: TextStyle(fontSize: 19),),) ,
       body: FutureBuilder(
         future: FirebaseFirestore.instance
             .collection('products')
@@ -53,7 +53,7 @@ class AllProductScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 mainAxisSpacing: 5,
                 crossAxisSpacing: 5,
-                childAspectRatio: 0.80,
+                childAspectRatio: 0.77,
               ),
               itemBuilder: (context, index) {
                 final productData = snapshot.data!.docs[index];
@@ -83,7 +83,7 @@ class AllProductScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         GestureDetector(
-                          onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
+                          onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel,productid: productModel.productId,)),
 
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
@@ -101,12 +101,12 @@ class AllProductScreen extends StatelessWidget {
                                 SizedBox(height: 3,),
                                 Row(
                                   children: [
-                                    Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 16)),
+                                    Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 14)),
                                     SizedBox(width: 5,),
-                                    Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 13,color: Colors.red,decoration: TextDecoration.lineThrough)),
+                                    Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 12,color: Colors.red,decoration: TextDecoration.lineThrough)),
                                   ],
                                 ),
-                                Text("Free delivery",style:TextStyle(fontSize: 13)),
+                                Text("Free delivery",style:TextStyle(fontSize: 12)),
 
                               ],
                             ),

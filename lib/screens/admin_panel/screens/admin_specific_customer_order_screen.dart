@@ -87,6 +87,96 @@ class SpecificCustomerOrderScreen extends StatelessWidget {
                   updatedAt: data['updatedAt'],
                 );
 
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    GestureDetector(
+                    onTap: () => Get.to(
+                             CheckSingleOrderScreen(
+                          docId: snapshot.data!.docs[index].id,
+                          orderModel: orderModel,
+                        ),
+                      ),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Container(
+                                child: Image.network(
+                                    orderModel.productImages[0]),
+                                width: 120,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    orderModel.productName,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    "Product Id : " + orderModel.productId,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 13),
+                                  ),
+                                  Text(
+                                    "Category : " +orderModel.categoryName,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 12),
+                                  ),
+
+                                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Delivery Time : " + orderModel.deliveryTime,
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 12),
+                                      ),
+
+                                    ],
+                                  ),
+
+
+
+                                ],
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                showBottomSheet(
+                                  userDocId: docId,
+                                  orderModel: orderModel,
+                                  orderDocId: orderDocId,
+                                );
+                              },
+                              child: Icon(Icons.more_vert),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding:
+                      const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Divider(
+                        thickness: 3,
+                        color: Colors.grey.shade300,
+                      ),
+                    ),
+                  ],
+                );
+
                 return Card(
                   elevation: 5,
                   child: ListTile(
@@ -114,6 +204,9 @@ class SpecificCustomerOrderScreen extends StatelessWidget {
                     ),
                   ),
                 );
+
+
+
               },
             );
           }

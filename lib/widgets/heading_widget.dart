@@ -36,8 +36,8 @@ class HeadingWidget extends StatelessWidget {
           GestureDetector(onTap:onTap ,
             child: Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(color: Colors.lightBlueAccent, width: 1.5)),
+                  borderRadius: BorderRadius.circular(5.0),
+                  border: Border.all(color: Colors.grey.shade300, width: 1.5)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(buttonText,style: TextStyle(fontWeight: FontWeight.w500,fontSize: 12,color: Colors.lightBlueAccent),),

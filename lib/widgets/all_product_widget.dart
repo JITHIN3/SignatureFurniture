@@ -14,7 +14,10 @@ import 'package:signature_funiture_project/utils/app_constants.dart';
 import '../screens/user_panel/product_details_screen.dart';
 
 class AllProductWidget extends StatelessWidget {
-  const AllProductWidget({super.key});
+
+   AllProductWidget({super.key});
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +56,7 @@ class AllProductWidget extends StatelessWidget {
               crossAxisCount: 2,
               mainAxisSpacing: 5,
               crossAxisSpacing: 5,
-              childAspectRatio: 0.80,
+              childAspectRatio: .70,
             ),
             itemBuilder: (context, index) {
               final productData = snapshot.data!.docs[index];
@@ -81,7 +84,7 @@ class AllProductWidget extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () => Get.to(
-                        () => ProductDetailsScreen(productModel: productModel)),
+                        () => ProductDetailsScreen(productModel: productModel,productid: productModel.productId,)),
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       // child: Container(
@@ -111,18 +114,41 @@ class AllProductWidget extends StatelessWidget {
                       ),
                           SizedBox(height: 3,),
                           Text(productModel.productName,maxLines: 1,style: TextStyle(fontSize: 15),),
-                          Text("Home",style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.grey,fontSize: 12),),
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius:
+                                BorderRadius.circular(5)),
+                            height: 20,
+                            width: 40,
+                            child: Center(
+                              child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(2),
+                                      child: Text(productModel.categoryName,style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.white,fontSize: 12,fontWeight: FontWeight.w500),),
+                                    ),
+                                    SizedBox(
+                                      width: 2,
+                                    ),
+
+                                  ]),
+                            ),
+                          ),
+
                           SizedBox(height: 3,),
 
 
                           Row(
                             children: [
-                              Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 16)),
+                              Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 14),overflow: TextOverflow.ellipsis,),
                               SizedBox(width: 5,),
-                              Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 13,color: Colors.grey,decoration: TextDecoration.lineThrough)),
+                              Text("Rs "+productModel.fullPrice,style:TextStyle(overflow: TextOverflow.ellipsis,fontSize: 12,color: Colors.grey,decoration: TextDecoration.lineThrough)),
                             ],
                           ),
-                          Text("Free delivery",style:TextStyle(fontSize: 13)),
+                          Text("Free delivery",style:TextStyle(fontSize: 12),overflow: TextOverflow.ellipsis,),
 
                         ],
                       ),

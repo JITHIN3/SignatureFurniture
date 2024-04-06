@@ -75,7 +75,7 @@ class FlashSaleWidget extends StatelessWidget {
                 // );
                 return Row(
                   children: [
-                    GestureDetector(onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel)),
+                    GestureDetector(onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel,productid: productModel.productId,)),
                       child: Padding(
                         padding: EdgeInsets.all(5.0),
                         child: Container(

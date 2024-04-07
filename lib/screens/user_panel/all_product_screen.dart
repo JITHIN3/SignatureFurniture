@@ -97,13 +97,35 @@ class AllProductScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 3,),
                                 Text(productModel.productName,maxLines: 1,style: TextStyle(fontSize: 15),),
-                                Text("Home",style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.grey,fontSize: 12),),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius:
+                                      BorderRadius.circular(5)),
+                                  height: 18,
+                                  width: 35,
+                                  child: Center(
+                                    child: Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: Text(productModel.categoryName,style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.white,fontSize: 10,fontWeight: FontWeight.w500),),
+                                          ),
+                                          SizedBox(
+                                            width: 2,
+                                          ),
+
+                                        ]),
+                                  ),
+                                ),
                                 SizedBox(height: 3,),
                                 Row(
                                   children: [
                                     Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 14)),
                                     SizedBox(width: 5,),
-                                    Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 12,color: Colors.red,decoration: TextDecoration.lineThrough)),
+                                    Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 12,color: Colors.grey,decoration: TextDecoration.lineThrough,decorationColor: Colors.grey)),
                                   ],
                                 ),
                                 Text("Free delivery",style:TextStyle(fontSize: 12)),

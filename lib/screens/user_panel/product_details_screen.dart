@@ -98,9 +98,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             children: [
                               Text(
                                 widget.productModel.productName,
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
                               ),
-                              Icon(Icons.favorite_outline)
+
                             ],
                           )),
                     ),
@@ -324,8 +324,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     required ProductModel productModel,
   }) async {
     final number = "+918943123283";
+
     final message =
-        "Hello Signature Furniture \n I want to know about this product\n ${productModel.productName} \n ${productModel.productId}";
+        "Hello Signature Furniture \nI want to know about this product\n ${productModel.productImages[0]}\nProduct name :${productModel.productName} \nProductId :${productModel.productId}";
     final url = 'https://wa.me/$number?text=${Uri.encodeComponent(message)}';
 
     if (await canLaunch(url)) {

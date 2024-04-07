@@ -35,7 +35,7 @@ class CategoriesWidget extends StatelessWidget {
           }
           if (snapshot.data != null) {
             return Container(
-              height: Get.height / 5,
+              height: Get.height / 9,
               child: ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   shrinkWrap: true,
@@ -59,76 +59,56 @@ class CategoriesWidget extends StatelessWidget {
                                       categoryId: categoriesModel.categoryId)),
                               child: Padding(
                                 padding: EdgeInsets.all(5),
+                                // child: Container(
+                                //   child: TransparentImageCard(
+                                //     borderRadius: 10.0,
+                                //     width: Get.width / 4.5,
+                                //     imageProvider: CachedNetworkImageProvider(
+                                //       categoriesModel.categoryImg,
+                                //     ),
+                                //     title: Padding(
+                                //       padding: const EdgeInsets.only(left: 5),
+                                //       child: Text(
+                                //         categoriesModel.categoryName,
+                                //         overflow: TextOverflow.ellipsis,
+                                //         style: TextStyle(
+                                //             fontSize: 15.0,
+                                //             color: Colors.white),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                                 child: Container(
-                                  child: TransparentImageCard(
-                                    borderRadius: 10.0,
-                                    width: Get.width / 4.5,
-                                    imageProvider: CachedNetworkImageProvider(
-                                      categoriesModel.categoryImg,
-                                    ),
-                                    title: Padding(
-                                      padding: const EdgeInsets.only(left:5),
-                                      child: Text(
-                                        categoriesModel.categoryName,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 15.0,color: Colors.white),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.lightBlueAccent.withOpacity(0.3),
+                                          Colors.white.withOpacity(0.3),
+                                          Colors.lightBlueAccent.withOpacity(0.3),
+                                        ],
                                       ),
-                                    ),
-                                    // footer: Row(children: [
-                                    //   Text("Rs ${productModel.salePrice}",
-                                    //       style: TextStyle(fontSize: 10.0)),
-                                    //   SizedBox(
-                                    //     width: 3.0,
-                                    //   ),
-                                    //   Text(
-                                    //     "Rs ${productModel.fullPrice}",
-                                    //     style: TextStyle(
-                                    //         fontSize: 10.0,
-                                    //         color: AppConstant.appScendoryColor,
-                                    //         decoration:
-                                    //             TextDecoration.lineThrough),
-                                    //   )
-                                    // ]),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  height: 80,
+                                  width: 80,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image(
+                                          width: 30,
+                                          height: 30,
+                                          image: NetworkImage(
+                                              categoriesModel.categoryImg)),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(categoriesModel.categoryName,style: TextStyle(fontSize: 12,fontWeight: FontWeight.w600),)
+                                    ],
                                   ),
                                 ),
-
-                                //             child: Card(
-                                //
-                                //               child: Container(
-                                //                 height: 100,
-                                //                 width: 80,
-                                //                 margin: const EdgeInsets.only(left: 10),
-                                //                 decoration: const BoxDecoration(
-                                //                     gradient: LinearGradient(
-                                //                         colors: [Colors.white, Colors.lightBlueAccent],
-                                //                         begin: const FractionalOffset(0, .8),
-                                //                         end: const FractionalOffset(1, 1.3),
-                                //                         stops: [0.0,3.0],
-                                //                         tileMode: TileMode.clamp
-                                //                     ),
-                                //                   borderRadius: BorderRadius.horizontal(
-                                //                     left: Radius.circular(10),
-                                //                   ),
-                                //                   boxShadow: [
-                                //                     BoxShadow(color: Colors.black54,
-                                //                       blurRadius: 10.0, // soften the shadow
-                                //                       spreadRadius: 1.0, //extend the shadow
-                                //
-                                // )]
-                                //                 ),
-                                //               child: Center(child: Image(image: NetworkImage(categoriesModel.categoryImg,),width: 70,),),),
-                                //               elevation: 0,
-                                //               color: Colors.grey.shade50,
-                                //               clipBehavior: Clip.hardEdge,
-                                //               shape: RoundedRectangleBorder(
-                                //                 borderRadius: BorderRadius.circular(10.0),
-                                //               ),
-                                //             ),
                               ),
                             ),
                           ],
                         ),
-
                       ],
                     );
                   }),

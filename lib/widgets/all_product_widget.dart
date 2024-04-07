@@ -14,10 +14,7 @@ import 'package:signature_funiture_project/utils/app_constants.dart';
 import '../screens/user_panel/product_details_screen.dart';
 
 class AllProductWidget extends StatelessWidget {
-
-   AllProductWidget({super.key});
-
-
+  AllProductWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +80,10 @@ class AllProductWidget extends StatelessWidget {
               return Row(
                 children: [
                   GestureDetector(
-                    onTap: () => Get.to(
-                        () => ProductDetailsScreen(productModel: productModel,productid: productModel.productId,)),
+                    onTap: () => Get.to(() => ProductDetailsScreen(
+                          productModel: productModel,
+                          productid: productModel.productId,
+                        )),
                     child: Padding(
                       padding: EdgeInsets.all(8.0),
                       // child: Container(
@@ -104,52 +103,78 @@ class AllProductWidget extends StatelessWidget {
                       //     footer: Center(child: Text("PKR: "+  productModel.fullPrice)),
                       //   ),
                       // ),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                      Container(height: Get.height /6 ,width: Get.width / 2.7,
-                        child: Image(fit: BoxFit.cover,
-                          image:
-                              NetworkImage(productModel.productImages[0])
-                        ),
-                      ),
-                          SizedBox(height: 3,),
-                          Text(productModel.productName,maxLines: 1,style: TextStyle(fontSize: 15),),
+                          Container(
+                            height: Get.height / 6,
+                            width: Get.width / 2.7,
+                            child: Image(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                    productModel.productImages[0])),
+                          ),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Text(
+                            productModel.productName,
+                            maxLines: 1,
+                            style: TextStyle(fontSize: 15),
+                          ),
                           Container(
                             decoration: BoxDecoration(
                                 color: Colors.green,
-                                borderRadius:
-                                BorderRadius.circular(5)),
-                            height: 20,
-                            width: 40,
+                                borderRadius: BorderRadius.circular(5)),
+                            height: 18,
+                            width: 35,
                             child: Center(
                               child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Padding(
                                       padding: const EdgeInsets.all(2),
-                                      child: Text(productModel.categoryName,style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.white,fontSize: 12,fontWeight: FontWeight.w500),),
+                                      child: Text(
+                                        productModel.categoryName,
+                                        style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w500),
+                                      ),
                                     ),
                                     SizedBox(
                                       width: 2,
                                     ),
-
                                   ]),
                             ),
                           ),
-
-                          SizedBox(height: 3,),
-
-
+                          SizedBox(
+                            height: 3,
+                          ),
                           Row(
                             children: [
-                              Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 14),overflow: TextOverflow.ellipsis,),
-                              SizedBox(width: 5,),
-                              Text("Rs "+productModel.fullPrice,style:TextStyle(overflow: TextOverflow.ellipsis,fontSize: 12,color: Colors.grey,decoration: TextDecoration.lineThrough)),
+                              Text(
+                                "Rs " + productModel.salePrice,
+                                style: TextStyle(fontSize: 14),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text("Rs " + productModel.fullPrice,
+                                  style: TextStyle(
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 12,
+                                      color: Colors.grey,
+                                      decoration: TextDecoration.lineThrough,decorationColor: Colors.grey)),
                             ],
                           ),
-                          Text("Free delivery",style:TextStyle(fontSize: 12),overflow: TextOverflow.ellipsis,),
-
+                          Text(
+                            "Free delivery",
+                            style: TextStyle(fontSize: 12),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),

@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,14 +10,15 @@ import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
 import 'package:signature_funiture_project/controllers/cart_price_controller.dart';
 import 'package:signature_funiture_project/models/cart_model.dart';
+import 'package:signature_funiture_project/models/order_model.dart';
 import 'package:signature_funiture_project/screens/user_panel/checkout_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/product_details_screen.dart';
 
 import '../../models/product_model.dart';
 
 class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
-
+   CartScreen({super.key});
+   CartModel? cartModel;
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -25,13 +28,17 @@ class _CartScreenState extends State<CartScreen> {
   final ProductPriceController productPriceController =
       Get.put(ProductPriceController());
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("My Cart",style: TextStyle(fontSize: 19),),
+        title: Text(
+          "My Cart",
+          style: TextStyle(fontSize: 19),
+        ),
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -69,22 +76,21 @@ class _CartScreenState extends State<CartScreen> {
                   itemBuilder: (context, index) {
                     final productData = snapshot.data!.docs[index];
                     CartModel cartModel = CartModel(
-                      productId: productData['productId'],
-                      categoryId: productData['categoryId'],
-                      productName: productData['productName'],
-                      categoryName: productData['categoryName'],
-                      salePrice: productData['salePrice'],
-                      fullPrice: productData['fullPrice'],
-                      productImages: productData['productImages'],
-                      deliveryTime: productData['deliveryTime'],
-                      isSale: productData['isSale'],
-                      productDescription: productData['productDescription'],
-                      createdAt: productData['createdAt'],
-                      updatedAt: productData['updatedAt'],
-                      productQuantity: productData['productQuantity'],
+                        productId: productData['productId'],
+                        categoryId: productData['categoryId'],
+                        productName: productData['productName'],
+                        categoryName: productData['categoryName'],
+                        salePrice: productData['salePrice'],
+                        fullPrice: productData['fullPrice'],
+                        productImages: productData['productImages'],
+                        deliveryTime: productData['deliveryTime'],
+                        isSale: productData['isSale'],
+                        productDescription: productData['productDescription'],
+                        createdAt: productData['createdAt'],
+                        updatedAt: productData['updatedAt'],
+                        productQuantity: productData['productQuantity'],
                         productTotalPrice: double.parse(
-                            productData['productTotalPrice'].toString())
-                    );
+                            productData['productTotalPrice'].toString()));
 
                     // calculate price
                     productPriceController.fetchProductPrice();
@@ -277,13 +283,6 @@ class _CartScreenState extends State<CartScreen> {
                                     children: [
                                       Icon(Icons.delete_outline_outlined,
                                           color: Colors.redAccent),
-                                      Text(
-                                        "Remove",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16,
-                                            color: Colors.redAccent),
-                                      )
                                     ],
                                   ),
                                 ),
@@ -292,17 +291,18 @@ class _CartScreenState extends State<CartScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 10,bottom: 10),
-                          child: Divider(thickness:5),
+                          padding: const EdgeInsets.only(top: 10, bottom: 10),
+                          child: Divider(thickness: 5),
                         ),
+
                       ],
                     );
-
                   }),
             );
           }
 
           return Container();
+
         },
       ),
       bottomNavigationBar: Container(
@@ -313,7 +313,7 @@ class _CartScreenState extends State<CartScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
-                () => Text(
+                () =>  Text(
                   "Total ₹${productPriceController.totalPrice.value.toStringAsFixed(1)} ",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
                 ),
@@ -331,18 +331,16 @@ class _CartScreenState extends State<CartScreen> {
                   height: Get.height / 18,
                   child: TextButton(
                       onPressed: () {
-
-
-
-                          Get.to(
+                        productPriceController.totalPrice.value == 0
+                            ? Get.snackbar("Add Product ", "Cart is empty",
+                                snackPosition: SnackPosition.TOP,
+                                backgroundColor: Colors.redAccent,
+                                margin: EdgeInsets.all(20),
+                                colorText: Colors.white)
+                            : Get.to(
                                 () => CheckOutScreen(),
-                          );
-
-
-
-
-                      }
-                      ,
+                              );
+                      },
                       child: Text(
                         "Checkout",
                         style: TextStyle(

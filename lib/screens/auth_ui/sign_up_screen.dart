@@ -146,13 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   email.isEmpty ||
                                   phone.isEmpty ||
                                   password.isEmpty) {
-                                Get.snackbar(
-                                    "Error", "Please Enter all Details",
-                                    snackPosition: SnackPosition.BOTTOM,
-                                    margin: EdgeInsets.all(20),
 
-                                    backgroundColor: Colors.pink,
-                                    colorText: Colors.white);
                               } else {
                                 UserCredential? userCredential =
                                     await signUpController.signUpMethod(

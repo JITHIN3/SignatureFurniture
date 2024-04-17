@@ -7,11 +7,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:signature_funiture_project/models/cart_model.dart';
 import 'package:signature_funiture_project/models/product_model.dart';
 import 'package:signature_funiture_project/screens/user_panel/cart_screen.dart';
+import 'package:signature_funiture_project/widgets/similar_category_product.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../widgets/all_product_widget.dart';
@@ -20,7 +22,8 @@ class ProductDetailsScreen extends StatefulWidget {
   ProductModel productModel;
   String productid;
 
-  ProductDetailsScreen({super.key, required this.productModel,required this.productid});
+  ProductDetailsScreen(
+      {super.key, required this.productModel, required this.productid});
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -28,13 +31,14 @@ class ProductDetailsScreen extends StatefulWidget {
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   User? user = FirebaseAuth.instance.currentUser;
+  TextEditingController reviewcontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Product Details"),
+        title: Text("Product Details",style: TextStyle(fontSize: 18),),
         actions: [
           GestureDetector(
             onTap: () => Get.to(() => CartScreen()),
@@ -45,7 +49,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           )
         ],
       ),
-      body: SingleChildScrollView(physics: BouncingScrollPhysics(),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: Container(
           width: Get.width,
           child: Column(
@@ -93,15 +98,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                           alignment: Alignment.topLeft,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                widget.productModel.productName,
-                                style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),
-                              ),
-
-                            ],
+                          child: Text(
+                            widget.productModel.productName,
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                                overflow: TextOverflow.fade),
                           )),
                     ),
                     Padding(
@@ -233,14 +235,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Product Details",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(widget.productModel.productDescription),
                   ],
                 ),
@@ -249,12 +254,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "Similar Products",
-                  style:
-                  TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ),
-              AllProductWidget()
-
+              SingleCategory(categoryId:widget.productModel.categoryId),
+              widget.productModel.categoryName == "Hospital" ? Text("Yes"):Text("NO"),
+              TextFormField(
+                controller: reviewcontroller,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  CollectionReference collref =
+                      FirebaseFirestore.instance.collection('reviews');
+                  collref.add({
+                    'productId': widget.productModel.productId,
+                    'productName': widget.productModel.productName,
+                    'categoryId': widget.productModel.categoryId,
+                    'categoryName': widget.productModel.categoryName,
+                    'createdAt': widget.productModel.createdAt,
+                    'updatedAt': widget.productModel.updatedAt,
+                    'review': reviewcontroller.text
+                  });
+                },
+                child: Text("submit"),
+              ),
             ],
           ),
         ),
@@ -323,7 +346,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   static Future<void> sendMessageOnWhatsApp({
     required ProductModel productModel,
   }) async {
-    final number = "+918943123283";
+    final number = "+918943123280";
 
     final message =
         "Hello Signature Furniture \nI want to know about this product\n ${productModel.productImages[0]}\nProduct name :${productModel.productName} \nProductId :${productModel.productId}";
@@ -341,6 +364,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     required String uId,
     int quantityIncrement = 1,
   }) async {
+    EasyLoading.show(status: "Please wait..");
     final DocumentReference documentReference = FirebaseFirestore.instance
         .collection('cart')
         .doc(uId)
@@ -362,7 +386,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         'productTotalPrice': totalPrice
       });
 
-      print("product exists ");
+      Get.snackbar("Product alredy exsist", "Please check your cart",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.pinkAccent,
+          margin: EdgeInsets.all(20),
+          colorText: Colors.white);
+      EasyLoading.dismiss();
     } else {
       await FirebaseFirestore.instance.collection('cart').doc(uId).set({
         'uId': uId,
@@ -386,12 +415,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ? widget.productModel.salePrice
               : widget.productModel.fullPrice));
       await documentReference.set(cartModel.toMap());
+
       print("product added");
       Get.snackbar("Product Added", "Please check your cart",
           snackPosition: SnackPosition.BOTTOM,
           backgroundColor: Colors.blueAccent,
           margin: EdgeInsets.all(20),
           colorText: Colors.white);
+      EasyLoading.dismiss();
     }
   }
 }

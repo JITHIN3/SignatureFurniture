@@ -21,7 +21,7 @@ class AllProductWidget extends StatelessWidget {
     return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection('products')
-          .where('isSale', isEqualTo: true)
+          .where('isSale', isEqualTo:false)
           .get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -77,109 +77,115 @@ class AllProductWidget extends StatelessWidget {
               //   createdAt: snapshot.data!.docs[index]['createdAt'],
               //   updatedAt: snapshot.data!.docs[index]['updatedAt'],
               // );
-              return Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => Get.to(() => ProductDetailsScreen(
-                          productModel: productModel,
-                          productid: productModel.productId,
-                        )),
-                    child: Padding(
-                      padding: EdgeInsets.all(8.0),
-                      // child: Container(
-                      //   child: FillImageCard(
-                      //     borderRadius: 20.0,
-                      //     width: Get.width / 2.3,
-                      //     heightImage: Get.height / 6,
-                      //     imageProvider: CachedNetworkImageProvider(
-                      //       productModel.productImages[0],
-                      //     ),
-                      //     title: Center(
-                      //       child: Text(
-                      //         productModel.productName,maxLines: 1,
-                      //         style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
-                      //       ),
-                      //     ),
-                      //     footer: Center(child: Text("PKR: "+  productModel.fullPrice)),
-                      //   ),
-                      // ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            height: Get.height / 6,
-                            width: Get.width / 2.7,
-                            child: Image(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                    productModel.productImages[0])),
-                          ),
-                          SizedBox(
-                            height: 3,
-                          ),
-                          Text(
-                            productModel.productName,
-                            maxLines: 1,
-                            style: TextStyle(fontSize: 15),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(5)),
-                            height: 18,
-                            width: 35,
-                            child: Center(
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(2),
-                                      child: Text(
-                                        productModel.categoryName,
-                                        style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: Colors.white,
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                  ]),
+              return GestureDetector(
+                onTap: () => Get.to(() => ProductDetailsScreen(
+                      productModel: productModel,
+                      productid: productModel.productId,
+                    )),
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  // child: Container(
+                  //   child: FillImageCard(
+                  //     borderRadius: 20.0,
+                  //     width: Get.width / 2.3,
+                  //     heightImage: Get.height / 6,
+                  //     imageProvider: CachedNetworkImageProvider(
+                  //       productModel.productImages[0],
+                  //     ),
+                  //     title: Center(
+                  //       child: Text(
+                  //         productModel.productName,maxLines: 1,
+                  //         style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
+                  //       ),
+                  //     ),
+                  //     footer: Center(child: Text("PKR: "+  productModel.fullPrice)),
+                  //   ),
+                  // ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: Get.height / 6,
+                        width: Get.width / 2.7,
+                        child: Image(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                                productModel.productImages[0])),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Text(
+                        productModel.productName,
+                        maxLines:2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(5)),
+                        height: 18,
+                        width: 45,
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(2),
+                            child: Text(
+                              productModel.categoryName,
+                              style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 3,
+                      ),
+                      Row(
+                        children: [
+                          productModel.isSale == true &&
+                              productModel.salePrice != ''
+                              ? Text(
+                            "₹" + productModel.salePrice,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          )
+                              : Text(
+                            "₹" + productModel.fullPrice,
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600),
+                          ),
                           SizedBox(
-                            height: 3,
+                            width: 7,
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                "Rs " + productModel.salePrice,
-                                style: TextStyle(fontSize: 14),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text("Rs " + productModel.fullPrice,
-                                  style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                      decoration: TextDecoration.lineThrough,decorationColor: Colors.grey)),
-                            ],
-                          ),
-                          Text(
-                            "Free delivery",
-                            style: TextStyle(fontSize: 12),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          productModel.isSale == true &&
+                              productModel.fullPrice !=
+                                  productModel.salePrice
+                              ? Text(
+                            "₹" + productModel.fullPrice,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.grey,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: Colors.grey),
+                          )
+                              : Container()
                         ],
                       ),
-                    ),
+                      Text(
+                        "Free delivery",
+                        style: TextStyle(fontSize: 12),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               );
             },
           );

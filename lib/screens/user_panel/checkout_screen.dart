@@ -26,332 +26,362 @@ class CheckOutScreen extends StatefulWidget {
 class _CheckOutScreenState extends State<CheckOutScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   final ProductPriceController productPriceController =
-      Get.put(ProductPriceController());
+  Get.put(ProductPriceController());
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+  TextEditingController landController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order Summary",style: TextStyle(fontSize: 19),),
+        title: Text("Order Summary", style: TextStyle(fontSize: 19),),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('cart')
-                .doc(user!.uid)
-                .collection('cartOrders')
-                .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error"),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Container(
-                  height: Get.height / 5,
-                  child: Center(
-                    child: CupertinoActivityIndicator(),
-                  ),
-                );
-              }
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('cart')
+                  .doc(user!.uid)
+                  .collection('cartOrders')
+                  .snapshots(),
+              builder:
+                  (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Error"),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    height: Get.height / 5,
+                    child: Center(
+                      child: CupertinoActivityIndicator(),
+                    ),
+                  );
+                }
 
-              if (snapshot.data!.docs.isEmpty) {
-                return Center(
-                  child: Text("No product found!"),
-                );
-              }
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Text("No product found!"),
+                  );
+                }
 
-              if (snapshot.data != null) {
-                return Container(
-                  child: ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        final productData = snapshot.data!.docs[index];
-                        CartModel cartModel = CartModel(
-                          productId: productData['productId'],
-                          categoryId: productData['categoryId'],
-                          productName: productData['productName'],
-                          categoryName: productData['categoryName'],
-                          salePrice: productData['salePrice'],
-                          fullPrice: productData['fullPrice'],
-                          productImages: productData['productImages'],
-                          deliveryTime: productData['deliveryTime'],
-                          isSale: productData['isSale'],
-                          productDescription: productData['productDescription'],
-                          createdAt: productData['createdAt'],
-                          updatedAt: productData['updatedAt'],
-                          productQuantity: productData['productQuantity'],
-                          productTotalPrice: double.parse(
-                              productData['productTotalPrice'].toString()),
-                        );
+                if (snapshot.data != null) {
+                  return Container(
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final productData = snapshot.data!.docs[index];
+                          CartModel cartModel = CartModel(
+                            productId: productData['productId'],
+                            categoryId: productData['categoryId'],
+                            productName: productData['productName'],
+                            categoryName: productData['categoryName'],
+                            salePrice: productData['salePrice'],
+                            fullPrice: productData['fullPrice'],
+                            productImages: productData['productImages'],
+                            deliveryTime: productData['deliveryTime'],
+                            isSale: productData['isSale'],
+                            productDescription: productData['productDescription'],
+                            createdAt: productData['createdAt'],
+                            updatedAt: productData['updatedAt'],
+                            productQuantity: productData['productQuantity'],
+                            productTotalPrice: double.parse(
+                                productData['productTotalPrice'].toString()),
+                          );
 
-                        // calculate price
-                        productPriceController.fetchProductPrice();
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Container(
-                                    child: Image.network(
-                                        cartModel.productImages[0]),
-                                    width: 120,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        cartModel.productName,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Text(
-                                        cartModel.categoryName,
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 11),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "₹" + cartModel.fullPrice,
-                                            style: TextStyle(
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                                fontSize: 15,
-                                                color: Colors.grey),
-                                          ),
-                                          SizedBox(
-                                            width: 6,
-                                          ),
-                                          Text(
-                                            "₹" + cartModel.salePrice,
-                                            style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: Colors.green,
-                                            borderRadius:
-                                                BorderRadius.circular(5)),
-                                        height: 20,
-                                        width: 40,
-                                        child: Center(
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "5",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 13),
-                                                ),
-                                                SizedBox(
-                                                  width: 2,
-                                                ),
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Colors.white,
-                                                  size: 13,
-                                                )
-                                              ]),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10, top: 10),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                          // calculate price
+                          productPriceController.fetchProductPrice();
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Delivery by " + cartModel.deliveryTime,
-                                        style: TextStyle(fontSize: 13),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "|",
-                                        style: TextStyle(fontSize: 20),
-                                      ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
-                                        "FREE Delivery",
-                                        style: TextStyle(
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Container(
+                                      child: Image.network(
+                                          cartModel.productImages[0]),
+                                      width: 120,
+                                    ),
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start,
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        Container(width: Get.width / 1.9,
+                                          child: Text(
+                                            cartModel.productName,
+                                            style: TextStyle(
+                                                fontSize: 16,
+
+                                                overflow: TextOverflow.ellipsis,
+
+                                                fontWeight: FontWeight.w500),
+                                            maxLines: 3,
+                                          ),
+                                        ),
+                                        Text(
+                                          cartModel.categoryName,
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 11),
+                                        ),
+                                        Row(
+                                          children: [
+                                            cartModel.isSale == true &&
+                                                cartModel.salePrice != ''
+                                                ? Text(
+                                              "₹" + cartModel.salePrice,
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                                : Text(
+                                              "₹" + cartModel.fullPrice,
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            SizedBox(
+                                              width: 7,
+                                            ),
+                                            cartModel.isSale == true &&
+                                                cartModel.fullPrice !=
+                                                    cartModel.salePrice
+                                                ? Text(
+                                              "₹" + cartModel.fullPrice,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  decorationColor: Colors.grey),
+                                            )
+                                                : Container()
+                                          ],
+                                        ),
+                                        // Container(
+                                        //   decoration: BoxDecoration(
+                                        //       color: Colors.green,
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(5)),
+                                        //   height: 20,
+                                        //   width: 40,
+                                        //   child: Center(
+                                        //     child: Row(
+                                        //         mainAxisAlignment:
+                                        //             MainAxisAlignment.center,
+                                        //         children: [
+                                        //           Text(
+                                        //             "5",
+                                        //             style: TextStyle(
+                                        //                 color: Colors.white,
+                                        //                 fontWeight:
+                                        //                     FontWeight.w600,
+                                        //                 fontSize: 13),
+                                        //           ),
+                                        //           SizedBox(
+                                        //             width: 2,
+                                        //           ),
+                                        //           Icon(
+                                        //             Icons.star,
+                                        //             color: Colors.white,
+                                        //             size: 13,
+                                        //           )
+                                        //         ]),
+                                        //   ),
+                                        // )
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                            ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              child: Divider(
-                                thickness: 3,
-                                color: Colors.grey.shade300,
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 10, top: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Delivery by " +
+                                              cartModel.deliveryTime,
+                                          style: TextStyle(fontSize: 13),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "|",
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Text(
+                                          "FREE Delivery",
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        );
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(top: 10, bottom: 10),
+                                child: Divider(
+                                  thickness: 3,
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                            ],
+                          );
 
-                        // return SwipeActionCell(
-                        //   trailingActions: [
-                        //     SwipeAction(
-                        //       title: "Delete",
-                        //       forceAlignmentToBoundary: true,
-                        //       performsFirstActionWithFullSwipe: true,
-                        //       onTap: (CompletionHandler handler) async {
-                        //         print('deleted');
-                        //         await FirebaseFirestore.instance
-                        //             .collection('cart')
-                        //             .doc(user!.uid)
-                        //             .collection('cartOrders')
-                        //             .doc(cartModel.productId)
-                        //             .delete();
-                        //       },
-                        //     ),
-                        //   ],
-                        //   key: ObjectKey(cartModel.productId),
-                        //   child: Card(
-                        //     elevation: 5,
-                        //     child: ListTile(
-                        //       leading: CircleAvatar(
-                        //         backgroundColor: Colors.lightBlueAccent,
-                        //         backgroundImage:
-                        //             NetworkImage(cartModel.productImages[0]),
-                        //       ),
-                        //       title: Text(cartModel.productName),
-                        //       subtitle: Row(
-                        //         mainAxisAlignment: MainAxisAlignment.start,
-                        //         children: [
-                        //           Text(cartModel.productTotalPrice.toString()),
-                        //         ],
-                        //       ),
-                        //     ),
-                        //   ),
-                        // );
-                      }),
-                );
-              }
+                          // return SwipeActionCell(
+                          //   trailingActions: [
+                          //     SwipeAction(
+                          //       title: "Delete",
+                          //       forceAlignmentToBoundary: true,
+                          //       performsFirstActionWithFullSwipe: true,
+                          //       onTap: (CompletionHandler handler) async {
+                          //         print('deleted');
+                          //         await FirebaseFirestore.instance
+                          //             .collection('cart')
+                          //             .doc(user!.uid)
+                          //             .collection('cartOrders')
+                          //             .doc(cartModel.productId)
+                          //             .delete();
+                          //       },
+                          //     ),
+                          //   ],
+                          //   key: ObjectKey(cartModel.productId),
+                          //   child: Card(
+                          //     elevation: 5,
+                          //     child: ListTile(
+                          //       leading: CircleAvatar(
+                          //         backgroundColor: Colors.lightBlueAccent,
+                          //         backgroundImage:
+                          //             NetworkImage(cartModel.productImages[0]),
+                          //       ),
+                          //       title: Text(cartModel.productName),
+                          //       subtitle: Row(
+                          //         mainAxisAlignment: MainAxisAlignment.start,
+                          //         children: [
+                          //           Text(cartModel.productTotalPrice.toString()),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // );
+                        }),
+                  );
+                }
 
-              return Container();
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Price Details",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Price"),
-                      Text("₹" +
-                          productPriceController.totalPrice.value
-                              .toStringAsFixed(1))
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8, top: 25),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("Delivery Charges"),
-                      Row(
-                        children: [
-                          Text(
-                            "₹50",
-                            style: TextStyle(
-                                decoration: TextDecoration.lineThrough,
-                                color: Colors.grey,
-                                decorationColor: Colors.grey),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            "FREE Delivery",
-                            style: TextStyle(color: Colors.green),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Divider(
-                  color: Colors.grey.shade300,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Total Amount",
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500),
-                      ),
-                      Text("₹" +
-                          productPriceController.totalPrice.value
-                              .toStringAsFixed(1),style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w500),)
-                    ],
-                  ),
-                ),
-              ],
+                return Container();
+              },
             ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Price Details",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Price"),
+                        Text("₹" +
+                            productPriceController.totalPrice.value
+                                .toStringAsFixed(1))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8, top: 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Delivery Charges"),
+                        Row(
+                          children: [
+                            Text(
+                              "₹50",
+                              style: TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                  color: Colors.grey,
+                                  decorationColor: Colors.grey),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Text(
+                              "FREE Delivery",
+                              style: TextStyle(color: Colors.green),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Divider(
+                    color: Colors.grey.shade300,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total Amount",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                        ),
+                        Text("₹" +
+                            productPriceController.totalPrice.value
+                                .toStringAsFixed(1), style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w500),)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(bottom: 5.0),
@@ -361,15 +391,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
-                () => Text(
-                  "₹${productPriceController.totalPrice.value.toStringAsFixed(1)} ",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-                ),
+                    () =>
+                    Text(
+                      "₹${productPriceController.totalPrice.value
+                          .toStringAsFixed(1)} ",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 20),
+                    ),
               ),
             ),
             Padding(
               padding:
-                  const EdgeInsets.only(left: 15, right: 8, bottom: 8, top: 8),
+              const EdgeInsets.only(left: 15, right: 8, bottom: 8, top: 8),
               child: Material(
                 child: Container(
                   decoration: BoxDecoration(
@@ -398,7 +431,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   void showCustomBottomSheet() {
     Get.bottomSheet(
       Container(
-        height: Get.height * 0.8,
+        height: Get.height * 1,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.vertical(
@@ -410,7 +443,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 20, top: 20),
+                padding: const EdgeInsets.only(left: 10, top: 20),
                 child: Text(
                   "User Details",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -418,12 +451,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
+                    horizontal: 10.0, vertical: 10.0),
                 child: Container(
                   child: TextFormField(
                     controller: nameController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       labelText: 'Name',
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -437,7 +471,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
+                    horizontal: 10.0),
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
@@ -445,7 +479,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       labelText: 'Phone',
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -459,16 +494,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 20.0),
+                  horizontal: 10.0,),
                 child: Container(
                   child: TextFormField(
-                    minLines: 6,
+                    minLines: 5,
                     // any number you need (It works as the rows for the textarea)
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     controller: addressController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
                       labelText: 'Address',
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.0,
@@ -479,6 +515,82 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     ),
                   ),
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0, vertical: 10),
+                child: Container(
+                  height: 55.0,
+                  child: TextFormField(
+                    controller: pincodeController,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.phone,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      labelText: 'Pin code',
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 10.0,
+                      ),
+                      hintStyle: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: Container(
+                        height: 55.0,
+                        child: TextFormField(
+                          controller: landController,
+                          textInputAction: TextInputAction.next,
+
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: 'Landmark',
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: Container(
+                        height: 55.0,
+                        child: TextFormField(
+                          controller: cityController,
+                          textInputAction: TextInputAction.next,
+
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: 'City',
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10.0,
+                            ),
+                            hintStyle: TextStyle(
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
               Center(
                 child: ElevatedButton(
@@ -492,10 +604,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   onPressed: () async {
                     if (nameController.text != '' &&
                         phoneController.text != '' &&
-                        addressController.text != '') {
+                        addressController.text != '' &&
+                        pincodeController.text != '' &&
+                        landController.text != '' && cityController.text !='') {
                       String name = nameController.text.trim();
                       String phone = phoneController.text.trim();
                       String address = addressController.text.trim();
+                      String pincode = pincodeController.text.trim();
+                      String landmark = landController.text.trim();
+                      String city = cityController.text.trim();
                       String customerToken = await getCustomerDeviceToken();
 
                       //place order serice
@@ -505,6 +622,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         customerName: name,
                         customerPhone: phone,
                         customerAddress: address,
+                        customerCity: city,
+                        customerLandmark: landmark,
+                        customerPincode: pincode,
+
                         customerDeviceToken: customerToken,
                       );
                     } else {

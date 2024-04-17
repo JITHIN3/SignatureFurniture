@@ -71,7 +71,8 @@ class _DrawerWidgetState extends State<DrawerWidget> {
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: ListTile(onTap: (){
                 Get.back();
-                Get.to(()=>AllOrderScreen());
+                // Get.to(()=>AllOrderScreen());
+                Get.to(()=>AllOrdersScreen());
               },
                   titleAlignment: ListTileTitleAlignment.center,
                   title: Text("Order"),

@@ -19,24 +19,31 @@ import 'package:signature_funiture_project/widgets/heading_widget.dart';
 import '../../models/product_model.dart';
 
 class MainSCreen extends StatelessWidget {
-   MainSCreen({super.key, this.productModel});
+  MainSCreen({super.key, this.productModel});
+
   ProductModel? productModel;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white,
-      appBar: AppBar(backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        title: Text(
+          "It All Starts Here!",
+          style: TextStyle(fontWeight: FontWeight.w600,fontSize: 19),
+        ),
         iconTheme: IconThemeData(color: Colors.black),
-     actions: [
-
-       GestureDetector(onTap: ()=>Get.to(()=>CartScreen()),
-         child: Padding(
-           padding: const EdgeInsets.all(8.0),
-           child: Icon(Icons.shopping_cart),
-         ),
-       )
-
-     ], ),
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          )
+        ],
+      ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Container(

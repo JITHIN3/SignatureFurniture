@@ -22,10 +22,12 @@ class AllFlashSaleProductScreen extends StatefulWidget {
 class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.grey.shade200,
+    return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: Text(
-          "All Flash Sale Products",style: TextStyle(fontSize: 19),
+          "All Flash Sale Products",
+          style: TextStyle(fontSize: 19),
         ),
       ),
       body: FutureBuilder(
@@ -89,59 +91,85 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
                 // );
                 return Padding(
                   padding: const EdgeInsets.only(top: 5),
-                  child: Container(color:Colors.white,
-                    child: Row(
-                      children: [
-                        GestureDetector(
+                  child: Container(
+                    color: Colors.white,
+                    child: GestureDetector(
+                      onTap: () => Get.to(() => ProductDetailsScreen(
 
-                        onTap:()=>Get.to(()=>ProductDetailsScreen(productModel:productModel,productid: productModel.productId,)),
-                          // child: Padding(
-                          //   padding: EdgeInsets.all(8.0),
-                          //   child: Container(
-                          //     child: FillImageCard(
-                          //       borderRadius: 20.0,
-                          //       width: Get.width / 2.3,
-                          //       heightImage: Get.height / 10,
-                          //       imageProvider: CachedNetworkImageProvider(
-                          //         productModel.productImages[0],
-                          //       ),
-                          //       title: Center(
-                          //         child: Text(
-                          //           productModel.productName,maxLines: 1,
-                          //           style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // ),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child:Column(crossAxisAlignment: CrossAxisAlignment.start,
+                            productModel: productModel,
+                            productid: productModel.productId,
+                          )),
+                      // child: Padding(
+                      //   padding: EdgeInsets.all(8.0),
+                      //   child: Container(
+                      //     child: FillImageCard(
+                      //       borderRadius: 20.0,
+                      //       width: Get.width / 2.3,
+                      //       heightImage: Get.height / 10,
+                      //       imageProvider: CachedNetworkImageProvider(
+                      //         productModel.productImages[0],
+                      //       ),
+                      //       title: Center(
+                      //         child: Text(
+                      //           productModel.productName,maxLines: 1,
+                      //           style: TextStyle(fontSize: 12.0,overflow: TextOverflow.ellipsis),
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: Get.height / 6,
+                              width: Get.width / 2.7,
+                              child: Image(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      productModel.productImages[0])),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(
+                              productModel.productName,
+                              maxLines: 1,
+                              style: TextStyle(fontSize: 15),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              "Home",
+                              style: TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  color: Colors.grey,
+                                  fontSize: 12),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Row(
                               children: [
-                                Container(height: Get.height /6 ,width: Get.width / 2.7,
-                                  child: Image(fit: BoxFit.cover,
-                                      image:
-                                      NetworkImage(productModel.productImages[0])
-                                  ),
+                                Text("Rs " + productModel.salePrice,
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
+                                SizedBox(
+                                  width: 5,
                                 ),
-                                SizedBox(height: 3,),
-                                Text(productModel.productName,maxLines: 1,style: TextStyle(fontSize: 15),),
-                                Text("Home",style: TextStyle(overflow: TextOverflow.ellipsis,color: Colors.grey,fontSize: 12),),
-                                SizedBox(height: 3,),
-                                Row(
-                                  children: [
-                                    Text("Rs "+productModel.salePrice,style:TextStyle(fontSize: 16)),
-                                    SizedBox(width: 5,),
-                                    Text("Rs "+productModel.fullPrice,style:TextStyle(fontSize: 13,color: Colors.red,decoration: TextDecoration.lineThrough)),
-                                  ],
-                                ),
-                                Text("Free delivery",style:TextStyle(fontSize: 13)),
-
+                                Text("Rs " + productModel.fullPrice,
+                                    style: TextStyle(
+                                        fontSize: 13,fontWeight: FontWeight.w500,
+                                        color: Colors.grey,decorationColor: Colors.grey,
+                                        decoration:
+                                            TextDecoration.lineThrough)),
                               ],
                             ),
-                          ),
+                            Text("Free delivery",
+                                style: TextStyle(fontSize: 13,color: Colors.green)),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 );

@@ -132,10 +132,12 @@ class CheckSingleOrderScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.w500),
                               ),
-                              Text(
-                                orderModel.productName,
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w400),
+                              Container(width: 200,
+                                child: Text(
+                                  orderModel.productName,
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w400,overflow: TextOverflow.ellipsis),maxLines: 3,
+                                ),
                               ),
                             ],
                           )),
@@ -234,25 +236,95 @@ class CheckSingleOrderScreen extends StatelessWidget {
                   ],
                 ),
               ),
+
+
+
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Product Details",
+                      "Shipping Details",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 19, fontWeight: FontWeight.w600,color: Colors.grey.shade400),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Text(orderModel.productDescription),
+
+                    Text(
+                      orderModel.customerName,
+                      style:
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      orderModel.customerAddress,
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      orderModel.customerPhone,
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      orderModel.customerLandmark,
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text(
+                      orderModel.customerCity,
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    Text("Pin : "+
+                        orderModel.customerPincode,
+                      style:
+                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 2,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(
+                      thickness: 5,
+                      color: Colors.grey.shade300,
+                    ),
+                    SizedBox(height:5,),
+
                   ],
                 ),
               ),
-              SizedBox(height: 8,),
-
+              SizedBox(height: 10,),
               CarouselSlider(
                   items: orderModel.productImages
                       .map(
@@ -287,41 +359,21 @@ class CheckSingleOrderScreen extends StatelessWidget {
                     autoPlayCurve: Curves.fastOutSlowIn,
                     scrollDirection: Axis.horizontal,
                   )),
+              SizedBox(height: 10,),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "User Details",
+                      "Product Details",
                       style:
-                      TextStyle(fontSize: 19, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    Row(
-                      children: [
-                        Text("User Name : ",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-                        Text(orderModel.customerName,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-                      ],
-                    ),
-                    SizedBox(height:5,),
-                    Row(
-                      children: [
-                        Text("Phone : ",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-                        Text(orderModel.customerPhone,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-                      ],
-                    ),
-                    SizedBox(height:5,),
-                    Row(
-                      children: [
-                        Text("Address : ",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-                        Text(orderModel.customerAddress,style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),),
-                      ],
-                    ),
-                    SizedBox(height:5,),
-
+                    Text(orderModel.productDescription),
                   ],
                 ),
               ),

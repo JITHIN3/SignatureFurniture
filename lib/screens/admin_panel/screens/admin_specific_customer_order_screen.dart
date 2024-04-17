@@ -85,6 +85,10 @@ class SpecificCustomerOrderScreen extends StatelessWidget {
                   salePrice: data['salePrice'],
                   status: data['status'],
                   updatedAt: data['updatedAt'],
+                  customerCity:data['customerCity'],
+                  customerLandmark:data['customerLandmark'],
+                  customerPincode: data['customerPincode'],
+
                 );
 
                 return Column(
@@ -118,11 +122,15 @@ class SpecificCustomerOrderScreen extends StatelessWidget {
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    orderModel.productName,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                  Container(width: Get.width / 1.8,
+                                    child: Text(
+                                      orderModel.productName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                   Text(
                                     "Product Id : " + orderModel.productId,
@@ -265,6 +273,7 @@ class SpecificCustomerOrderScreen extends StatelessWidget {
                             .update(
                           {
                             'status': true,
+
                           },
                         );
                       },

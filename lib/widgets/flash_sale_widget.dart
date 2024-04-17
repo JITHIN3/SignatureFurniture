@@ -81,7 +81,7 @@ class FlashSaleWidget extends StatelessWidget {
                         child: Container(
                           child: FillImageCard(color: Colors.grey.shade100,
                             borderRadius: 10.0,
-                            width: Get.width / 3.5,
+                            width: Get.width / 3.2,
                             heightImage: Get.height / 8,
                             imageProvider: CachedNetworkImageProvider(
                               productModel.productImages[0],
@@ -93,13 +93,13 @@ class FlashSaleWidget extends StatelessWidget {
                             ),
                             footer: Row(children: [
                               Text("Rs ${productModel.salePrice}",
-                                  style: TextStyle(fontSize: 10.0)),
+                                  style: TextStyle(fontSize: 10.0),overflow: TextOverflow.ellipsis,),
                               SizedBox(width: 3.0,),
                               Text("Rs ${productModel.fullPrice}",
                                   style: TextStyle(
                                       fontSize: 10.0,
                                       color: AppConstant.appScendoryColor,
-                                      decoration: TextDecoration.lineThrough))
+                                      decoration: TextDecoration.lineThrough),overflow: TextOverflow.ellipsis,)
                             ]),
                           ),
                         ),

@@ -9,4 +9,8 @@ class IsSaleController extends GetxController {
     isSale.value = value;
     update();
   }
+  void setIsSaleOldValue(bool value) {
+    isSale.value = value;
+    update();
+  }
 }

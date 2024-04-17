@@ -5,10 +5,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:signature_funiture_project/models/product_model.dart';
-import 'package:signature_funiture_project/screens/admin_panel/screens/admin_add_product_screen.dart';
-import 'package:signature_funiture_project/screens/admin_panel/screens/admin_product_detail_screen.dart';
 
+import 'package:signature_funiture_project/models/product_model.dart';
+import 'package:signature_funiture_project/screens/admin_panel/controller/admin_category_dropdown_controller.dart';
+import 'package:signature_funiture_project/screens/admin_panel/controller/is_sale_controller.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_add_product_screen.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_edit_product_screen.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_product_detail_screen.dart';
 
 class AdminAllProductsScreen extends StatefulWidget {
   const AdminAllProductsScreen({super.key});
@@ -20,7 +23,8 @@ class AdminAllProductsScreen extends StatefulWidget {
 class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Colors.white,
+    return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("All Products"),
         actions: [
@@ -32,7 +36,7 @@ class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
             ),
           )
         ],
-        backgroundColor:Colors.white,
+        backgroundColor: Colors.white,
       ),
       body: FutureBuilder(
         future: FirebaseFirestore.instance
@@ -89,9 +93,11 @@ class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(onTap: (){
-                      Get.to(() => AdminSingleProductDetailScreen(productModel: productModel));
-                    },
+                    GestureDetector(
+                      onTap: () {
+                        Get.to(() => AdminSingleProductDetailScreen(
+                            productModel: productModel));
+                      },
                       child: Container(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -109,14 +115,18 @@ class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
                               padding: const EdgeInsets.only(top: 10),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    productModel.productName,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                  Container(
+                                    width: Get.width / 1.9,
+                                    child: Text(
+                                      productModel.productName,
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                   Text(
                                     "Product Id : " + productModel.productId,
@@ -133,19 +143,37 @@ class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 12),
                                   ),
-
-
                                 ],
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                final editProductCategory =
+                                    Get.put(CategoryDropDownController());
+                                final isSaleController =
+                                    Get.put(IsSaleController());
+                                editProductCategory
+                                    .setOldValue(productModel.categoryId);
+                                isSaleController
+                                    .setIsSaleOldValue(productModel.isSale);
+
+                                Get.to(() => EditProductScreen(
+                                    productModel: productModel));
+                              },
+                              child: Text(
+                                "Edit",
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.redAccent),
                               ),
                             )
                           ],
                         ),
                       ),
                     ),
-
                     Padding(
-                      padding:
-                      const EdgeInsets.only(top: 10, bottom: 10),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Divider(
                         thickness: 3,
                         color: Colors.grey.shade300,

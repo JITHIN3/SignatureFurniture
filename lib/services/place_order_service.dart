@@ -18,6 +18,10 @@ void placeOrder({
   required String customerPhone,
   required String customerAddress,
   required String customerDeviceToken,
+  required String customerCity,
+  required String customerLandmark,
+  required String customerPincode,
+
 }) async {
   final user = FirebaseAuth.instance.currentUser;
   EasyLoading.show(status: "Please Wait..");
@@ -37,6 +41,7 @@ void placeOrder({
         String orderId = generateOrderId();
 
         OrderModel cartModel = OrderModel(
+
           productId: data['productId'],
           categoryId: data['categoryId'],
           productName: data['productName'],
@@ -57,6 +62,10 @@ void placeOrder({
           customerPhone: customerPhone,
           customerAddress: customerAddress,
           customerDeviceToken: customerDeviceToken,
+          customerCity: customerCity,
+          customerLandmark: customerLandmark,
+          customerPincode: customerPincode,
+
         );
 
         for (var x = 0; x < documents.length; x++) {
@@ -70,6 +79,9 @@ void placeOrder({
               'customerPhone': customerPhone,
               'customerAddress': customerAddress,
               'customerDeviceToken': customerDeviceToken,
+              'customerCity': customerCity,
+              'customerLandmark':customerLandmark,
+              'customerPincode':customerPincode,
               'orderStatus': false,
               'createdAt': DateTime.now()
             },

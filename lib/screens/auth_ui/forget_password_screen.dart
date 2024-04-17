@@ -49,7 +49,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     "We will email you a link to reset\n              your password",
                     style: TextStyle(color: Colors.grey),
                   ),
-                  Container(
+                  Container(height: 50,
                       margin: EdgeInsets.all(20),
                       child: TextFormField(
                         controller: userEmail,
@@ -70,7 +70,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             color: Colors.lightBlueAccent,
                             borderRadius: BorderRadius.circular(15.0)),
                         width: Get.width / 1.1,
-                        height: Get.height / 15,
+                        height: Get.height / 18,
                         child: TextButton(
                             onPressed: () async {
                               String email = userEmail.text.trim();

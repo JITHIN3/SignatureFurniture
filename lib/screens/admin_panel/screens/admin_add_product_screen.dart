@@ -275,11 +275,37 @@ class AdminAddPrdouctScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(
+            //       horizontal: 20.0, vertical: 20.0),
+            //   child: Container(
+            //     child: TextFormField(
+            //       minLines: 6,
+            //       // any number you need (It works as the rows for the textarea)
+            //       keyboardType: TextInputType.multiline,
+            //       maxLines: null,
+            //       controller: productDescriptionController,
+            //       decoration: InputDecoration(
+            //         border: OutlineInputBorder(),
+            //         labelText: 'Address',
+            //         contentPadding: EdgeInsets.symmetric(
+            //           horizontal: 10.0,
+            //         ),
+            //         hintStyle: TextStyle(
+            //           fontSize: 12,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
-            Container(
-              height: 65,
-              margin: EdgeInsets.symmetric(horizontal: 10.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10,right: 10,bottom: 10),
               child: TextFormField(
+                minLines: 6,
+                // any number you need (It works as the rows for the textarea)
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
                 cursorColor: Colors.blueAccent,
                 textInputAction: TextInputAction.next,
                 controller: productDescriptionController,

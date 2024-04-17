@@ -4,7 +4,7 @@ class ProductModel {
   final String productId;
   final String categoryId;
   final String productName;
-  final String categoryName;
+  late final String categoryName;
   final String salePrice;
   final String fullPrice;
   final List productImages;
@@ -13,6 +13,7 @@ class ProductModel {
   final String productDescription;
   final dynamic createdAt;
   final dynamic updatedAt;
+
 
   ProductModel({
     required this.productId,
@@ -27,6 +28,7 @@ class ProductModel {
     required this.productDescription,
     required this.createdAt,
     required this.updatedAt,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +45,7 @@ class ProductModel {
       'productDescription': productDescription,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+
     };
   }
 
@@ -60,6 +63,7 @@ class ProductModel {
       productDescription: json['productDescription'],
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
+
     );
   }
 }

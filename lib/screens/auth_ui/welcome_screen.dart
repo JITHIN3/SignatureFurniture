@@ -13,7 +13,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(leading: Container(),backgroundColor: Colors.white,
-        title: Text("Siganture Funiture"),
+        title: Text("Signature Funiture"),
         centerTitle: true,
       ),
       body: Padding(

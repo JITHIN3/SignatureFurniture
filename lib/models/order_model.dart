@@ -20,7 +20,12 @@ class OrderModel {
   final String customerName;
   final String customerPhone;
   final String customerAddress;
+  final String customerCity;
+  final String customerPincode;
+  final String customerLandmark;
+
   final String customerDeviceToken;
+
 
   OrderModel({
     required this.productId,
@@ -43,6 +48,10 @@ class OrderModel {
     required this.customerPhone,
     required this.customerAddress,
     required this.customerDeviceToken,
+    required this.customerCity,
+    required this.customerLandmark,
+    required this.customerPincode
+
   });
 
   Map<String, dynamic> toMap() {
@@ -67,6 +76,10 @@ class OrderModel {
       'customerPhone': customerPhone,
       'customerAddress': customerAddress,
       'customerDeviceToken': customerDeviceToken,
+      'customerCity' : customerCity,
+      'customerLandmark' : customerLandmark,
+      'customerPincode' : customerPincode,
+
     };
   }
 
@@ -92,6 +105,11 @@ class OrderModel {
       customerPhone: json['customerPhone'],
       customerAddress: json['customerAddress'],
       customerDeviceToken: json['customerDeviceToken'],
+      customerCity:json['customerCity'],
+      customerLandmark: json['customerLandmark'],
+      customerPincode: json['customerPincode'],
+
+
     );
   }
 }

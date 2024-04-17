@@ -17,8 +17,10 @@ import 'package:signature_funiture_project/screens/user_panel/product_details_sc
 import '../../models/product_model.dart';
 
 class CartScreen extends StatefulWidget {
-   CartScreen({super.key});
-   CartModel? cartModel;
+  CartScreen({super.key});
+
+  CartModel? cartModel;
+
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
@@ -27,7 +29,6 @@ class _CartScreenState extends State<CartScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   final ProductPriceController productPriceController =
       Get.put(ProductPriceController());
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +64,24 @@ class _CartScreenState extends State<CartScreen> {
 
           if (snapshot.data!.docs.isEmpty) {
             return Center(
-              child: Text("No product found!"),
-            );
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 200,
+                  child: Image(
+                    image: AssetImage("lib/assets/images/cartempty.png"),
+                  ),
+                ),
+                Text(
+                  "Cart is empty",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      color: Colors.grey.shade500),
+                )
+              ],
+            ));
           }
 
           if (snapshot.data != null) {
@@ -117,11 +134,16 @@ class _CartScreenState extends State<CartScreen> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    cartModel.productName,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500),
+                                  Container(
+                                    width: Get.width / 1.9,
+                                    child: Text(
+                                      cartModel.productName,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          overflow: TextOverflow.ellipsis,
+                                          fontWeight: FontWeight.w500),
+                                      maxLines: 3,
+                                    ),
                                   ),
                                   Text(
                                     cartModel.categoryName,
@@ -130,23 +152,37 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   Row(
                                     children: [
-                                      Text(
-                                        "₹" + cartModel.fullPrice,
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.lineThrough,
-                                            fontSize: 15,
-                                            color: Colors.grey),
-                                      ),
+                                      cartModel.isSale == true &&
+                                              cartModel.salePrice != ''
+                                          ? Text(
+                                              "₹" + cartModel.salePrice,
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w600),
+                                            )
+                                          : Text(
+                                              "₹" + cartModel.fullPrice,
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
                                       SizedBox(
-                                        width: 6,
+                                        width: 7,
                                       ),
-                                      Text(
-                                        "₹" + cartModel.salePrice,
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w500),
-                                      ),
+                                      cartModel.isSale == true &&
+                                              cartModel.fullPrice !=
+                                                  cartModel.salePrice
+                                          ? Text(
+                                              "₹" + cartModel.fullPrice,
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.grey,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  decorationColor: Colors.grey),
+                                            )
+                                          : Container()
                                     ],
                                   ),
                                 ],
@@ -294,7 +330,6 @@ class _CartScreenState extends State<CartScreen> {
                           padding: const EdgeInsets.only(top: 10, bottom: 10),
                           child: Divider(thickness: 5),
                         ),
-
                       ],
                     );
                   }),
@@ -302,7 +337,6 @@ class _CartScreenState extends State<CartScreen> {
           }
 
           return Container();
-
         },
       ),
       bottomNavigationBar: Container(
@@ -313,7 +347,7 @@ class _CartScreenState extends State<CartScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
-                () =>  Text(
+                () => Text(
                   "Total ₹${productPriceController.totalPrice.value.toStringAsFixed(1)} ",
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
                 ),

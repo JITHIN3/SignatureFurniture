@@ -82,9 +82,9 @@ class CategoriesWidget extends StatelessWidget {
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Colors.lightBlueAccent.withOpacity(0.3),
+                                          Colors.grey.withOpacity(0.3),
                                           Colors.white.withOpacity(0.3),
-                                          Colors.lightBlueAccent.withOpacity(0.3),
+                                          Colors.grey.withOpacity(0.3),
                                         ],
                                       ),
                                       borderRadius: BorderRadius.circular(10)),

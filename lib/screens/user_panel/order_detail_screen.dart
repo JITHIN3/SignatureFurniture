@@ -101,33 +101,114 @@ class OrderDetailScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Divider(
-                      thickness: 3,
-                      color: Colors.grey.shade300,
-                    ),
+                    // Divider(
+                    //   thickness: 3,
+                    //   color: Colors.grey.shade300,
+                    // ),
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TimelineTile(
-                      isFirst: true,
-                      beforeLineStyle: LineStyle(
-                        color: Colors.green,
-                      ),
-                      indicatorStyle: IndicatorStyle(
-                          width: 40,
-                          color: Colors.green,
-                          iconStyle: IconStyle(
-                              iconData: Icons.done, color: Colors.white),),
-                    ),
+              // Padding(
+              //   padding: const EdgeInsets.all(8.0),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       TimelineTile(
+              //         isFirst: true,
+              //         beforeLineStyle: LineStyle(
+              //           color: Colors.green,
+              //         ),
+              //         indicatorStyle: IndicatorStyle(
+              //             width: 40,
+              //             color: Colors.green,
+              //             iconStyle: IconStyle(
+              //                 iconData: Icons.done, color: Colors.white),),
+              //       ),
+              //
+              //     ],
+              //   ),
+              // ),
 
-                  ],
-                ),
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Container(),
+              //     Padding(
+              //       padding: const EdgeInsets.only(top: 8, right: 20),
+              //       child: GestureDetector(
+              //         onTap: () {
+              //           showDialog(
+              //             context: context,
+              //             builder: (BuildContext context) {
+              //               return AlertDialog(
+              //                 backgroundColor: Colors.white,
+              //                 shape: RoundedRectangleBorder(
+              //                     borderRadius: BorderRadius.circular(0)),
+              //                 content: Padding(
+              //                   padding: const EdgeInsets.all(10),
+              //                   child: Text(
+              //                     "Are You Sure Cancel this order?",
+              //                     style: TextStyle(
+              //                       fontSize: 17,
+              //                       fontWeight: FontWeight.w500,
+              //                     ),
+              //                   ),
+              //                 ),
+              //                 actions: [
+              //                   Row(
+              //                     mainAxisAlignment: MainAxisAlignment.end,
+              //                     children: [
+              //                       Text(
+              //                         "NO",
+              //                         style: TextStyle(
+              //                             fontWeight: FontWeight.w500,
+              //                             color: Colors.blueAccent),
+              //                       ),
+              //                       SizedBox(
+              //                         width: 10,
+              //                       ),
+              //                       GestureDetector(onTap: ()
+              //                         async {
+              //                           await FirebaseFirestore.instance
+              //                               .collection('orders')
+              //                               .doc(userDocId)
+              //                               .collection('confirmOrders')
+              //                               .doc(orderDocId)
+              //                               .update(
+              //                             {
+              //                               'status': true,
+              //
+              //                             },
+              //                           );
+              //                         },
+              //                       },
+              //                         child: Text(
+              //                           "YES",
+              //                           style: TextStyle(
+              //                               fontWeight: FontWeight.w500,
+              //                               color: Colors.redAccent),
+              //                         ),
+              //                       )
+              //                     ],
+              //                   )
+              //                 ],
+              //               );
+              //             },
+              //           );
+              //         },
+              //         child: Container(
+              //           child: Text(
+              //             "Cancel",
+              //             style: TextStyle(
+              //                 fontSize: 15,
+              //                 fontWeight: FontWeight.w600,
+              //                 color: Colors.redAccent),
+              //           ),
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // ),
               SizedBox(
                 height: 8,
               ),
@@ -174,14 +255,13 @@ class OrderDetailScreen extends StatelessWidget {
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                     ),
-
                     SizedBox(
                       height: 2,
                     ),
                     Text(
                       orderModel.customerLandmark,
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
                       height: 2,
@@ -192,7 +272,7 @@ class OrderDetailScreen extends StatelessWidget {
                     Text(
                       orderModel.customerCity,
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
                       height: 2,
@@ -200,10 +280,10 @@ class OrderDetailScreen extends StatelessWidget {
                     SizedBox(
                       height: 2,
                     ),
-                    Text("Pin : "+
-                        orderModel.customerPincode,
+                    Text(
+                      "Pin : " + orderModel.customerPincode,
                       style:
-                      TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
                       height: 2,

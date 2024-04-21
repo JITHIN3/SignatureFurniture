@@ -3,6 +3,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:signature_funiture_project/models/cart_model.dart';
+import 'package:signature_funiture_project/models/user_model.dart';
 import 'package:signature_funiture_project/screens/auth_ui/welcome_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/all_category_screen.dart';
 import 'package:signature_funiture_project/screens/user_panel/all_flas_sale_product.dart';
@@ -18,13 +20,21 @@ import 'package:signature_funiture_project/widgets/heading_widget.dart';
 
 import '../../models/product_model.dart';
 
-class MainSCreen extends StatelessWidget {
-  MainSCreen({super.key, this.productModel});
+class MainSCreen extends StatefulWidget {
+  MainSCreen({super.key, this.productModel,this.cartModel});
 
   ProductModel? productModel;
+  CartModel? cartModel;
+
 
   @override
+  State<MainSCreen> createState() => _MainSCreenState();
+}
+
+class _MainSCreenState extends State<MainSCreen> {
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -35,6 +45,7 @@ class MainSCreen extends StatelessWidget {
         ),
         iconTheme: IconThemeData(color: Colors.black),
         actions: [
+          
           GestureDetector(
             onTap: () => Get.to(() => CartScreen()),
             child: Padding(

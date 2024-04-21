@@ -146,7 +146,7 @@ class _AllSingleCategoryProductScreenState
                               style: TextStyle(fontSize: 15),
                             ),
                             Text(
-                              "Home",
+                              productModel.categoryName,
                               style: TextStyle(
                                   overflow: TextOverflow.ellipsis,
                                   color: Colors.grey,

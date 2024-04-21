@@ -13,6 +13,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:signature_funiture_project/models/cart_model.dart';
 import 'package:signature_funiture_project/models/product_model.dart';
 import 'package:signature_funiture_project/screens/user_panel/cart_screen.dart';
+import 'package:signature_funiture_project/screens/user_panel/product_review_screen.dart';
+import 'package:signature_funiture_project/screens/user_panel/user_review_screen.dart';
 import 'package:signature_funiture_project/widgets/similar_category_product.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,7 +40,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Product Details",style: TextStyle(fontSize: 18),),
+        title: Text(
+          "Product Details",
+          style: TextStyle(fontSize: 18),
+        ),
         actions: [
           GestureDetector(
             onTap: () => Get.to(() => CartScreen()),
@@ -233,6 +238,54 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ],
                 ),
               ),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 10,right: 5,bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(  onTap: () => Get.to(() => ProductReviewScreen(productModel: widget.productModel,
+                      productid: widget.productModel.productId,)),
+                      child: Text(
+                        "View Reviews",
+                        style:
+                            TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => Get.to(() => UserReviewScreen(
+                            productid: widget.productModel.productId,
+                            productModel: widget.productModel,
+                          )),
+                      child: Container(
+                        width: 100,
+                        height: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            border: Border.all(
+                                color: Colors.grey.shade300, width: 1.5)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: Text(
+                            "Add review",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Colors.lightBlueAccent),
+                          )),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              Divider(
+                thickness: 1,
+                color: Colors.grey.shade300,
+              ),
+
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -257,27 +310,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 ),
               ),
-              SingleCategory(categoryId:widget.productModel.categoryId),
-              widget.productModel.categoryName == "Hospital" ? Text("Yes"):Text("NO"),
-              TextFormField(
-                controller: reviewcontroller,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  CollectionReference collref =
-                      FirebaseFirestore.instance.collection('reviews');
-                  collref.add({
-                    'productId': widget.productModel.productId,
-                    'productName': widget.productModel.productName,
-                    'categoryId': widget.productModel.categoryId,
-                    'categoryName': widget.productModel.categoryName,
-                    'createdAt': widget.productModel.createdAt,
-                    'updatedAt': widget.productModel.updatedAt,
-                    'review': reviewcontroller.text
-                  });
-                },
-                child: Text("submit"),
-              ),
+              SingleCategory(categoryId: widget.productModel.categoryId),
+              //
             ],
           ),
         ),
@@ -425,4 +459,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       EasyLoading.dismiss();
     }
   }
+  // void showBottamsheet(){
+  //   Get.bottomSheet();
+  // }
 }

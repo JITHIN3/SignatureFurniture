@@ -23,7 +23,7 @@ class _AdminDrawerWidgetState extends State<AdminDrawerWidget> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: Get.height / 25),
-      child: Drawer(
+      child: Drawer(backgroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(20.0),
@@ -102,29 +102,7 @@ class _AdminDrawerWidgetState extends State<AdminDrawerWidget> {
                   leading:Icon(Icons.production_quantity_limits)
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:20),
-              child: ListTile(onTap: (){
-                // Get.back();
-                // Get.to(()=>AllOrderScreen());
-              },
-                  titleAlignment: ListTileTitleAlignment.center,
-                  title: Text("Categories"),
 
-
-                  leading:Icon(Icons.category)
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:20),
-              child: ListTile(
-                  titleAlignment: ListTileTitleAlignment.center,
-                  title: Text("Contact"),
-
-
-                  leading:Icon(Icons.phone)
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal:20),
               child: ListTile(onTap: () async{

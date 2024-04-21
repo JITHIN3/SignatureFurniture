@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:signature_funiture_project/firebase_options.dart';
+import 'package:signature_funiture_project/pay.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_in_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/sign_up_screen.dart';
 import 'package:signature_funiture_project/screens/auth_ui/splash_screen.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       home: SplashScreen(),
       // home: Test(),
+      // home: PayPage(),
       builder: EasyLoading.init(),
     );
   }

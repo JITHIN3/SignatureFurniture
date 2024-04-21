@@ -57,7 +57,7 @@ void placeOrder({
           productQuantity: data['productQuantity'],
           productTotalPrice: double.parse(data['productTotalPrice'].toString()),
           customerId: user.uid,
-          status: false,
+          status: data['status'],
           customerName: customerName,
           customerPhone: customerPhone,
           customerAddress: customerAddress,

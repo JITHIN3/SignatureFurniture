@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
 import 'package:image_card/image_card.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:signature_funiture_project/controllers/cart_price_controller.dart';
 import 'package:signature_funiture_project/models/cart_model.dart';
 import 'package:signature_funiture_project/screens/user_panel/product_details_screen.dart';
@@ -26,7 +27,7 @@ class CheckOutScreen extends StatefulWidget {
 class _CheckOutScreenState extends State<CheckOutScreen> {
   User? user = FirebaseAuth.instance.currentUser;
   final ProductPriceController productPriceController =
-  Get.put(ProductPriceController());
+      Get.put(ProductPriceController());
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController addressController = TextEditingController();
@@ -35,11 +36,51 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   TextEditingController cityController = TextEditingController();
 
 
+  //payment
+
+  TextEditingController? amountcon;
+  Razorpay? _razorpay;
+
+
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay!.clear();
+    amountcon = TextEditingController();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay!.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccess);
+    _razorpay!.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentError);
+    _razorpay!.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
+  }
+
+  void handlePaymentSuccess(PaymentSuccessResponse response) {
+    print("success");
+  }
+
+  void handlePaymentError(PaymentSuccessResponse response) {
+    print("fail");
+  }
+
+  void handleExternalWallet(ExternalWalletResponse response) {
+    print("external wallet");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Order Summary", style: TextStyle(fontSize: 19),),
+        title: Text(
+          "Order Summary",
+          style: TextStyle(fontSize: 19),
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -51,8 +92,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   .doc(user!.uid)
                   .collection('cartOrders')
                   .snapshots(),
-              builder:
-                  (BuildContext context,
+              builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 if (snapshot.hasError) {
                   return Center(
@@ -92,7 +132,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             productImages: productData['productImages'],
                             deliveryTime: productData['deliveryTime'],
                             isSale: productData['isSale'],
-                            productDescription: productData['productDescription'],
+                            productDescription:
+                                productData['productDescription'],
                             createdAt: productData['createdAt'],
                             updatedAt: productData['updatedAt'],
                             productQuantity: productData['productQuantity'],
@@ -121,19 +162,18 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 10),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Container(width: Get.width / 1.9,
+                                        Container(
+                                          width: Get.width / 1.9,
                                           child: Text(
                                             cartModel.productName,
                                             style: TextStyle(
                                                 fontSize: 16,
-
                                                 overflow: TextOverflow.ellipsis,
-
                                                 fontWeight: FontWeight.w500),
                                             maxLines: 3,
                                           ),
@@ -146,35 +186,40 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                         Row(
                                           children: [
                                             cartModel.isSale == true &&
-                                                cartModel.salePrice != ''
+                                                    cartModel.salePrice != ''
                                                 ? Text(
-                                              "₹" + cartModel.salePrice,
-                                              style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w600),
-                                            )
+                                                    "₹" + cartModel.salePrice,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  )
                                                 : Text(
-                                              "₹" + cartModel.fullPrice,
-                                              style: TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
+                                                    "₹" + cartModel.fullPrice,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
                                             SizedBox(
                                               width: 7,
                                             ),
                                             cartModel.isSale == true &&
-                                                cartModel.fullPrice !=
-                                                    cartModel.salePrice
+                                                    cartModel.fullPrice !=
+                                                        cartModel.salePrice
                                                 ? Text(
-                                              "₹" + cartModel.fullPrice,
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.grey,
-                                                  decoration: TextDecoration
-                                                      .lineThrough,
-                                                  decorationColor: Colors.grey),
-                                            )
+                                                    "₹" + cartModel.fullPrice,
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.grey,
+                                                        decoration:
+                                                            TextDecoration
+                                                                .lineThrough,
+                                                        decorationColor:
+                                                            Colors.grey),
+                                                  )
                                                 : Container()
                                           ],
                                         ),
@@ -215,11 +260,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, top: 10),
+                                padding:
+                                    const EdgeInsets.only(left: 10, top: 10),
                                 child: Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
                                       children: [
@@ -251,7 +296,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                               ),
                               Padding(
                                 padding:
-                                const EdgeInsets.only(top: 10, bottom: 10),
+                                    const EdgeInsets.only(top: 10, bottom: 10),
                                 child: Divider(
                                   thickness: 3,
                                   color: Colors.grey.shade300,
@@ -370,10 +415,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w500),
                         ),
-                        Text("₹" +
-                            productPriceController.totalPrice.value
-                                .toStringAsFixed(1), style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500),)
+                        Text(
+                          "₹" +
+                              productPriceController.totalPrice.value
+                                  .toStringAsFixed(1),
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                        )
                       ],
                     ),
                   ),
@@ -391,18 +439,15 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Obx(
-                    () =>
-                    Text(
-                      "₹${productPriceController.totalPrice.value
-                          .toStringAsFixed(1)} ",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 20),
-                    ),
+                () => Text(
+                  "₹${productPriceController.totalPrice.value.toStringAsFixed(1)} ",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                ),
               ),
             ),
             Padding(
               padding:
-              const EdgeInsets.only(left: 15, right: 8, bottom: 8, top: 8),
+                  const EdgeInsets.only(left: 15, right: 8, bottom: 8, top: 8),
               child: Material(
                 child: Container(
                   decoration: BoxDecoration(
@@ -470,8 +515,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
@@ -494,7 +538,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,),
+                  horizontal: 10.0,
+                ),
                 child: Container(
                   child: TextFormField(
                     minLines: 5,
@@ -517,8 +562,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
@@ -541,7 +586,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
               ),
               Row(
                 children: [
-
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
@@ -550,7 +594,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         child: TextFormField(
                           controller: landController,
                           textInputAction: TextInputAction.next,
-
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
@@ -574,7 +617,6 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         child: TextFormField(
                           controller: cityController,
                           textInputAction: TextInputAction.next,
-
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10)),
@@ -592,55 +634,148 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   ),
                 ],
               ),
-              Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+              Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(width: 150,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          backgroundColor: Colors.deepOrange,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        ),
+                        onPressed: () async {
+                          if (nameController.text != '' &&
+                              phoneController.text != '' &&
+                              addressController.text != '' &&
+                              pincodeController.text != '' &&
+                              landController.text != '' &&
+                              cityController.text != '') {
+                            String name = nameController.text.trim();
+                            String phone = phoneController.text.trim();
+                            String address = addressController.text.trim();
+                            String pincode = pincodeController.text.trim();
+                            String landmark = landController.text.trim();
+                            String city = cityController.text.trim();
+                            String customerToken = await getCustomerDeviceToken();
+
+                            //place order serice
+
+                            placeOrder(
+                              context: context,
+                              customerName: name,
+                              customerPhone: phone,
+                              customerAddress: address,
+                              customerCity: city,
+                              customerLandmark: landmark,
+                              customerPincode: pincode,
+                              customerDeviceToken: customerToken,
+                            );
+                          } else {
+                            print("Please fill all details");
+                            Get.snackbar("Warning!", "Please fill all details!",
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                                duration: Duration(seconds: 1),
+                                snackPosition: SnackPosition.BOTTOM);
+                          }
+                        },
+                        child: Text(
+                          "Confirm Order",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
-                    backgroundColor: Colors.deepOrange,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  ),
-                  onPressed: () async {
-                    if (nameController.text != '' &&
-                        phoneController.text != '' &&
-                        addressController.text != '' &&
-                        pincodeController.text != '' &&
-                        landController.text != '' && cityController.text !='') {
-                      String name = nameController.text.trim();
-                      String phone = phoneController.text.trim();
-                      String address = addressController.text.trim();
-                      String pincode = pincodeController.text.trim();
-                      String landmark = landController.text.trim();
-                      String city = cityController.text.trim();
-                      String customerToken = await getCustomerDeviceToken();
+                    Container(width: 150,
+                      child: ElevatedButton(
+                          onPressed: () async{
 
-                      //place order serice
+                            if (nameController.text != '' &&
+                                phoneController.text != '' &&
+                                addressController.text != '' &&
+                                pincodeController.text != '' &&
+                                landController.text != '' &&
+                                cityController.text != '') {
+                              String name = nameController.text.trim();
+                              String phone = phoneController.text.trim();
+                              String address = addressController.text.trim();
+                              String pincode = pincodeController.text.trim();
+                              String landmark = landController.text.trim();
+                              String city = cityController.text.trim();
+                              String customerToken = await getCustomerDeviceToken();
 
-                      placeOrder(
-                        context: context,
-                        customerName: name,
-                        customerPhone: phone,
-                        customerAddress: address,
-                        customerCity: city,
-                        customerLandmark: landmark,
-                        customerPincode: pincode,
+                              if(phoneController.text.length < 10){
 
-                        customerDeviceToken: customerToken,
-                      );
-                    } else {
-                      print("Please fill all details");
-                      Get.snackbar("Warning!", "Please fill all details!",
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                          duration: Duration(seconds: 5),
-                          snackPosition: SnackPosition.BOTTOM);
-                    }
-                  },
-                  child: Text(
-                    "Confirm Order",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                                Get.snackbar(
+                                    "Warning!", "Please fill all details!",
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                    duration: Duration(seconds: 1),
+                                    snackPosition: SnackPosition.BOTTOM);
+
+                              }
+
+                              //place order serice
+
+                              placeOrder(
+                                context: context,
+                                customerName: name,
+                                customerPhone: phone,
+                                customerAddress: address,
+                                customerCity: city,
+                                customerLandmark: landmark,
+                                customerPincode: pincode,
+                                customerDeviceToken: customerToken,
+                              );
+
+
+                              var options = {
+                                'key': 'rzp_test_1DP5mmOlF5G5ag',
+                                'amount':num.parse(productPriceController.totalPrice.value.toStringAsFixed(1)) * 100,
+                                'name': 'Signature Funriture',
+
+                                'retry': {'enabled': true},
+                                'send_sms_hash': true,
+                                'prefill': {
+                                  'contact': '8943123283',
+                                  'email': 'signaturefuniture@gamil.com'
+                                },
+                                'external': {
+                                  'wallets': ['paytm']
+                                }
+                              };
+                              try {
+                                _razorpay!.open(options);
+                              } catch (e) {
+                                debugPrint("Error : $e");
+                              }
+                            } else {
+                              print("Please fill all details");
+                              Get.snackbar(
+                                  "Warning!", "Please fill all details!",
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white,
+                                  duration: Duration(seconds: 1),
+                                  snackPosition: SnackPosition.BOTTOM);
+                            }
+
+                          },
+                          child: Text(
+                            "Pay Now",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            backgroundColor: Colors.green,
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          )),
+                    )
+                  ],
                 ),
               ),
             ],

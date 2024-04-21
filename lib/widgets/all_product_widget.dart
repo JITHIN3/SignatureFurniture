@@ -21,7 +21,7 @@ class AllProductWidget extends StatelessWidget {
     return FutureBuilder(
       future: FirebaseFirestore.instance
           .collection('products')
-          .where('isSale', isEqualTo:false)
+
           .get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -46,7 +46,7 @@ class AllProductWidget extends StatelessWidget {
 
         if (snapshot.data != null) {
           return GridView.builder(
-            itemCount: snapshot.data!.docs.length,
+            itemCount:6 ,
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

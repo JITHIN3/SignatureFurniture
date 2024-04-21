@@ -141,7 +141,7 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             Text(
-                              "Home",
+                              productModel.categoryName,
                               style: TextStyle(
                                   overflow: TextOverflow.ellipsis,
                                   color: Colors.grey,

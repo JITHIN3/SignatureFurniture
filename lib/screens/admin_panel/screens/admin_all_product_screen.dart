@@ -47,11 +47,11 @@ class _AdminAllProductsScreenState extends State<AdminAllProductsScreen> {
         backgroundColor: Colors.white,
       ),
       body: LiquidPullToRefresh(onRefresh: _handleRefresh,color: Colors.blueAccent,
-        child: FutureBuilder(
-          future: FirebaseFirestore.instance
+        child: StreamBuilder(
+          stream: FirebaseFirestore.instance
               .collection('products')
               .orderBy('createdAt', descending: true)
-              .get(),
+              .snapshots(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
               return Container(

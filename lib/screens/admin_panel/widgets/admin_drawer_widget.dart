@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:signature_funiture_project/screens/admin_panel/admin_main_screen.dart';
+import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_category_screen.dart';
 import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_order_screen.dart';
 import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_product_screen.dart';
 import 'package:signature_funiture_project/screens/admin_panel/screens/admin_all_users_screen.dart';
@@ -100,6 +101,20 @@ class _AdminDrawerWidgetState extends State<AdminDrawerWidget> {
 
 
                   leading:Icon(Icons.production_quantity_limits)
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal:20),
+              child: ListTile(
+                  onTap: (){
+                    Get.back();
+                    Get.to(()=>AllCategoriesScreen.AdminAllCategoriesScreen());
+                  },
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: Text("Categories"),
+
+
+                  leading:Icon(Icons.category)
               ),
             ),
 

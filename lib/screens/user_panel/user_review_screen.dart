@@ -24,7 +24,7 @@ TextEditingController namecontroller = TextEditingController();
 class _UserReviewScreenState extends State<UserReviewScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(backgroundColor: Colors.white,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
@@ -82,7 +82,12 @@ class _UserReviewScreenState extends State<UserReviewScreen> {
               ),
             ),
           ),
-          ElevatedButton(
+          ElevatedButton(style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blueAccent,shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+              textStyle: TextStyle(color: Colors.white,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold)),
             onPressed: () async {
               if (namecontroller.text != '' && reviewcontroller.text != '') {
                 EasyLoading.show();
@@ -111,7 +116,7 @@ class _UserReviewScreenState extends State<UserReviewScreen> {
 
               EasyLoading.dismiss();
             },
-            child: Text("submit"),
+            child: Text("Submit",style: TextStyle(color: Colors.white,)),
           ),
         ]),
       ),

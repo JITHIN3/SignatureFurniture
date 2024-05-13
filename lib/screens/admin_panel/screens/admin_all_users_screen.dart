@@ -42,7 +42,7 @@ class _AdminAllUsersScreenState extends State<AdminAllUsersScreen> {
         child: FutureBuilder(
           future: FirebaseFirestore.instance
               .collection('users')
-              .orderBy('createdOn', descending: true)
+              .orderBy('createdOn', descending: true).where("Isadmin" == false)
               .get(),
           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {

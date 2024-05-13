@@ -233,7 +233,7 @@ class _CartScreenState extends State<CartScreen> {
                                                 });
                                               }
                                             },
-                                            child: Text("-")),
+                                            child: Container(width: 30,child:Text("-"))),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               left: 10, right: 10),
